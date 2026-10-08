@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@theme {
+  /* Typography Tokens */
+  --font-sans: 'Noto Sans Thai', 'Noto Sans', sans-serif;
+  --font-heading: 'IBM Plex Sans Thai', 'IBM Plex Sans', sans-serif;
+  --text-body-thai: 0.9375rem;
+
+  /* Brand Tokens */
+  --color-brand-primary: #003625;
+  --color-brand-hover: #184e3a;
+  --color-brand-secondary: #1a6b4c;
+  --color-brand-tint: #a5f3cb;
+  --color-brand-badge: #b7efd3;
+  --color-brand-gold: #c59b48;
+  --color-brand-surface: #f8faf9;
+  --color-brand-border-subtle: #d8e6df;
+
+  /* Neutral Scale Tokens */
+  --color-neutral-900: #1c1c19;
+  --color-neutral-700: #404944;
+  --color-neutral-600: #4a5550;
+  --color-neutral-200: #e5e0d8;
+  --color-neutral-50: #fbf9f6;
+
+  /* Semantic Text, Surface & Border Tokens */
+  --color-text-primary: #1c1c19;
+  --color-text-secondary: #404944;
+  --color-text-muted: #4a5550;
+  --color-surface: #ffffff;
+  --color-surface-muted: #fbf9f6;
+  --color-surface-brand: #f8faf9;
+  --color-border-default: #e5e0d8;
+  --color-border-brand-subtle: #d8e6df;
+
+  /* Semantic Status Tokens */
+  --color-success-primary: #1a6b4c;
+  --color-success-bg: #b7efd3;
+  --color-status-success: #1a6b4c;
+
+  --color-warning-text: #7b2f0d;
+  --color-warning-text-strong: #782d0b;
+  --color-warning-bg: #ffdbce;
+  --color-warning-border: #ffb59a;
+  --color-status-warning: #7b2f0d;
+
+  --color-danger-primary: #ba1a1a;
+  --color-danger-text: #93000a;
+  --color-status-danger: #ba1a1a;
+
+  --color-info-primary: #0284c7;
+  --color-status-info: #0284c7;
+
+  /* Border Radius Tokens */
+  --radius-card-sm: 0.75rem;
+  --radius-card: 1rem;
+  --radius-modal: 1.5rem;
+  --radius-pill: 9999px;
+
+  /* Shadow Tokens */
+  --shadow-3xs: 0 1px 1px 0 rgb(0 0 0 / 0.04);
+  --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-header: 0 2px 12px rgba(24, 78, 58, 0.04);
+  --shadow-nav: 0 -2px 12px rgba(24, 78, 58, 0.05);
+  --shadow-dialog: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+  /* Animation Tokens */
+  --animate-fade-in: fade-in 0.2s ease-out;
+
+  /* Spacing Tokens (Repeated Touch Target & Layout Spacing) */
+  --spacing-touch: 2.75rem;
+  --spacing-page-x: 1rem;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@utility shadow-3xs {
+  box-shadow: 0 1px 1px 0 rgb(0 0 0 / 0.04);
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* Keyboard focus visibility for interactive controls */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+/* Opt-in scrollbar hiding for horizontal chip/filter rows */
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar,
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Reduced motion support: disable non-essential animations and scale transforms while preserving loading status perception */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-fade-in,
+  .animate-pulse,
+  .animate-bounce {
+    animation: none !important;
+  }
+
+  .animate-spin {
+    animation-duration: 3s !important;
+  }
+
+  button:active,
+  .group:hover > div {
+    transform: none !important;
+  }
+}

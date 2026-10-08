@@ -1,0 +1,8 @@
+{
+  "name": "ภูมิปัญญา | PUM PANYA",
+  "description": "ระบบเช็กความปลอดภัยสมุนไพร ป้องกันพิษต่อตับไต และปรับสมดุลธาตุเจ้าเรือนเฉพาะบุคคล",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

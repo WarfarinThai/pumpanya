@@ -1,0 +1,82 @@
+[
+  {
+    "id": 21,
+    "group_id": 1,
+    "disease_name": "อาการ Dyspepsia (โรคกระเพาะอาหารและกรดไหลย้อน)"
+  },
+  {
+    "id": 22,
+    "group_id": 1,
+    "disease_name": "โรคท้องผูกเรื้อรัง (Chronic constipation)"
+  },
+  {
+    "id": 23,
+    "group_id": 1,
+    "disease_name": "โรคริดสีดวงทวาร (Hemorrhoids)"
+  },
+  {
+    "id": 24,
+    "group_id": 2,
+    "disease_name": "อาการไอ (Cough)"
+  },
+  {
+    "id": 25,
+    "group_id": 2,
+    "disease_name": "โรคจมูกอักเสบภูมิแพ้ (Allergic Rhinitis)"
+  },
+  {
+    "id": 26,
+    "group_id": 2,
+    "disease_name": "โรคติดเชื้อทางเดินหายใจส่วนบนเฉียบพลัน (Upper Respiratory Tract Infection / หวัด / โควิด-19)"
+  },
+  {
+    "id": 27,
+    "group_id": 3,
+    "disease_name": "โรคข้อเข่าเสื่อม (Osteoarthritis of knee)"
+  },
+  {
+    "id": 28,
+    "group_id": 4,
+    "disease_name": "ผิวหนังอักเสบจากการฉายรังสี (Radiation-Induced Dermatitis)"
+  },
+  {
+    "id": 29,
+    "group_id": 5,
+    "disease_name": "โรคลมชักรักษายาก (Refractory Epilepsy / Drug-Resistant Epilepsy)"
+  },
+  {
+    "id": 30,
+    "group_id": 5,
+    "disease_name": "อาการเกร็งและอาการปวดจากระบบประสาทส่วนกลางจากโรคปลอกประสาทส่วนกลางอักเสบ (Multiple Sclerosis Spasticity and Pain)"
+  },
+  {
+    "id": 31,
+    "group_id": 5,
+    "disease_name": "ภาวะปวดเหตุพยาธิสภาพประสาท (Neuropathic Pain)"
+  },
+  {
+    "id": 32,
+    "group_id": 6,
+    "disease_name": "แผลไหม้จากความร้อน (แผลไฟไหม้ น้ำร้อนลวก ระดับ 1 และ 2)"
+  },
+  {
+    "id": 33,
+    "group_id": 6,
+    "disease_name": "โรคเริม (Herpes Simplex - HSV-1, HSV-2)"
+  },
+  {
+    "id": 34,
+    "group_id": 6,
+    "disease_name": "โรคงูสวัด (Herpes Zoster)"
+  },
+  {
+    "id": 35,
+    "group_id": 6,
+    "disease_name": "แผลในปาก / แผลร้อนใน (Aphthous Ulcer)"
+  },
+  {
+    "id": 36,
+    "group_id": 6,
+    "disease_name": "โรคหูดหงอนไก่ (Condyloma Acuminata)"
+  }
+]

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Center Vertical Stem Gap: width 8px, x=252 to 260 -->
+  <!-- Top Center Leaf: Soft Sage #98BD98 -->
+  <path
+    d="M256,105 C264,135 288,175 288,220 C288,245 276,275 262,295 L262,225 C262,210 256,190 256,190 C256,190 250,210 250,225 L250,295 C236,275 224,245 224,220 C224,175 248,135 256,105 Z"
+    fill="#98BD98"
+  />
+
+  <!-- Golden 4-pointed Star Accent (Top Right): #F5A623 -->
+  <path
+    d="M336,120 Q336,140 356,140 Q336,140 336,160 Q336,140 316,140 Q336,140 336,120 Z"
+    fill="#F5A623"
+  />
+
+  <!-- Middle Left Leaf: Herbal Medium Green #4E8955 -->
+  <path
+    d="M248,220 C220,185 180,180 180,245 C180,290 220,340 248,355 C244,320 242,270 248,220 Z"
+    fill="#4E8955"
+  />
+
+  <!-- Middle Right Leaf: Soft Moss Sage #9CB79A with subtle inner core -->
+  <path
+    d="M264,220 C292,185 332,180 332,245 C332,290 292,340 264,355 C268,320 270,270 264,220 Z"
+    fill="#9CB79A"
+  />
+  <!-- Inner teardrop glow on middle right leaf -->
+  <path
+    d="M280,265 C288,245 304,240 306,260 C308,280 292,298 280,305 C282,290 282,275 280,265 Z"
+    fill="#E8EFE6"
+    opacity="0.85"
+  />
+
+  <!-- Bottom Left Leaf: Deep Forest Green #295536 -->
+  <path
+    d="M142,245 C138,280 148,325 185,365 C215,395 240,402 246,402 C244,380 230,340 200,310 C175,285 152,260 142,245 Z"
+    fill="#295536"
+  />
+
+  <!-- Bottom Right Leaf: Deepest Evergreen #1A3D24 -->
+  <path
+    d="M370,245 C374,280 364,325 327,365 C297,395 272,402 266,402 C268,380 282,340 312,310 C337,285 360,260 370,245 Z"
+    fill="#1A3D24"
+  />
+</svg>

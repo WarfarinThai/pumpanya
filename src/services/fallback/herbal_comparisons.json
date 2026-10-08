@@ -1,0 +1,398 @@
+[
+  {
+    "id": 1,
+    "indication": "ลดไข้ ไอ เจ็บคอ (Viral infection)",
+    "conventional_drug": "ยาบรรเทาอาการไข้ เจ็บคอ",
+    "herbal_drug": "ยาฟ้าทะลายโจร",
+    "dosage_and_administration": "หวัด: ชนิดผง ครั้งละ 1.5 - 3 กรัม วันละ 4 ครั้ง หลังอาหารและก่อนนอน หรือชนิดสารสกัดที่มี andrographolide 60 - 120 มก./วัน แบ่งรับประทาน 3 - 4 ครั้ง เป็นเวลา 5 - 7 วัน / โควิด-19: สารสกัดที่มี andrographolide 180 มก./วัน แบ่งรับประทาน 3 ครั้ง เป็นเวลา 5 วัน",
+    "restricted_populations": [
+      "หญิงตั้งครรภ์",
+      "หญิงให้นมบุตร",
+      "ผู้ที่แพ้ยาฟ้าทะลายโจร"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่พบความเป็นพิษต่อตับในขนาดที่ใช้ในการรักษา",
+      "kidney_toxicity": "ไม่พบความเป็นพิษต่อไตในขนาดที่ใช้ในการรักษา"
+    },
+    "drug_interactions": [
+      "ยาละลายลิ่มเลือด (Warfarin, NOACs)",
+      "ยาต้านการจับตัวของเกล็ดเลือด",
+      "ยาลดความดันโลหิต",
+      "ยาที่ผ่านการเมแทบอลิซึมทางเอนไซม์ CYP1A2, CYP2C9, CYP3A4"
+    ],
+    "adverse_effects": [
+      "ปวดท้อง",
+      "ท้องเดิน",
+      "คลื่นไส้",
+      "เบื่ออาหาร",
+      "วิงเวียนศีรษะ",
+      "ใจสั่น",
+      "ลมพิษ"
+    ]
+  },
+  {
+    "id": 2,
+    "indication": "อาการแน่นจุกเสียด ท้องอืด ท้องเฟ้อ (Dyspepsia)",
+    "conventional_drug": "Omeprazole",
+    "herbal_drug": "ยาขมิ้นชัน",
+    "dosage_and_administration": "รับประทานครั้งละ 500 มก. - 1 กรัม วันละ 4 ครั้ง หลังอาหารและก่อนนอน",
+    "restricted_populations": [
+      "ผู้ที่ท่อน้ำดีอุดตัน",
+      "ผู้ที่ไวต่อยานี้",
+      "ระวังในผู้ป่วยโรคนิ่วในถุงน้ำดี",
+      "ระวังในหญิงตั้งครรภ์และเด็ก"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่พบรายงานความเป็นพิษ",
+      "kidney_toxicity": "ไม่พบรายงานความเป็นพิษ"
+    },
+    "drug_interactions": [
+      "ยาละลายลิ่มเลือดและยาต้านการจับตัวของเกล็ดเลือด",
+      "ยาที่ผ่านเอนไซม์ CYP3A4, CYP1A2, CYP2A6",
+      "ยารักษามะเร็ง (Doxorubicin, Chlormethine, Cyclophosphamide, Camptothecin)"
+    ],
+    "adverse_effects": [
+      "ผิวหนังอักเสบจากการแพ้"
+    ]
+  },
+  {
+    "id": 3,
+    "indication": "ขับลม บรรเทาอาการท้องอืด ท้องเฟ้อ",
+    "conventional_drug": "Anti-Flatulence",
+    "herbal_drug": "ยาธาตุอบเชย",
+    "dosage_and_administration": "รับประทานครั้งละ 15 - 30 มล. วันละ 3 ครั้ง หลังอาหาร เช้า กลางวัน เย็น",
+    "restricted_populations": [
+      "ผู้ป่วยที่มีความผิดปกติของตับและไต"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ระวังการใช้อย่างต่อเนื่อง อาจเกิดการสะสมของการบูรและเกิดพิษต่อตับได้",
+      "kidney_toxicity": "ระวังการใช้อย่างต่อเนื่อง อาจเกิดการสะสมของการบูรและเกิดพิษต่อไตได้"
+    },
+    "drug_interactions": [],
+    "adverse_effects": []
+  },
+  {
+    "id": 4,
+    "indication": "ขับลม บรรเทาอาการท้องอืด ท้องเฟ้อ",
+    "conventional_drug": "Anti-Flatulence",
+    "herbal_drug": "ยาขิง",
+    "dosage_and_administration": "รับประทานครั้งละ 2 - 4 กรัม หลังอาหาร เมื่อมีอาการ",
+    "restricted_populations": [
+      "ผู้ป่วยโรคนิ่วในถุงน้ำดี",
+      "เด็กอายุต่ำกว่า 6 ขวบ"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่พบรายงานความเป็นพิษ",
+      "kidney_toxicity": "ไม่พบรายงานความเป็นพิษ"
+    },
+    "drug_interactions": [
+      "สารกันเลือดเป็นลิ่มและยาต้านการจับตัวของเกล็ดเลือด"
+    ],
+    "adverse_effects": [
+      "แสบร้อนบริเวณทางเดินอาหาร",
+      "ระคายเคืองบริเวณปากและคอ"
+    ]
+  },
+  {
+    "id": 5,
+    "indication": "ป้องกันและบรรเทาอาการคลื่นไส้ อาเจียน",
+    "conventional_drug": "Dimenhydrinate",
+    "herbal_drug": "ยาขิง",
+    "dosage_and_administration": "รับประทานครั้งละ 1 - 2 กรัม ก่อนเดินทาง 30 นาที - 1 ชั่วโมง หรือเมื่อมีอาการ",
+    "restricted_populations": [
+      "ผู้ป่วยโรคนิ่วในถุงน้ำดี",
+      "เด็กอายุต่ำกว่า 6 ขวบ"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่พบรายงานความเป็นพิษ",
+      "kidney_toxicity": "ไม่พบรายงานความเป็นพิษ"
+    },
+    "drug_interactions": [
+      "สารกันเลือดเป็นลิ่มและยาต้านการจับตัวของเกล็ดเลือด"
+    ],
+    "adverse_effects": [
+      "แสบร้อนบริเวณทางเดินอาหาร",
+      "ระคายเคืองบริเวณปากและคอ"
+    ]
+  },
+  {
+    "id": 6,
+    "indication": "บรรเทาอาการไอ มีเสมหะ",
+    "conventional_drug": "ยาบรรเทาอาการไอ",
+    "herbal_drug": "ยาประสะมะแว้ง",
+    "dosage_and_administration": "ละลายน้ำมะนาวแทรกเกลือรับประทานหรือใชอม เมื่อมีอาการ (ผู้ใหญ่ 1 - 1.4 กรัม/ครั้ง, เด็ก 6 - 12 ปี 200 - 400 มก./ครั้ง)",
+    "restricted_populations": [
+      "ผู้ที่แพ้สมุนไพรที่เป็นส่วนประกอบของยา"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่พบรายงานความเป็นพิษ",
+      "kidney_toxicity": "ไม่พบรายงานความเป็นพิษ"
+    },
+    "drug_interactions": [],
+    "adverse_effects": []
+  },
+  {
+    "id": 7,
+    "indication": "บรรเทาอาการไอ ขับเสมหะ",
+    "conventional_drug": "ยาบรรเทาอาการไอ",
+    "herbal_drug": "ยาแก้ไอผสมมะขามป้อม",
+    "dosage_and_administration": "จิบเมื่อมีอาการไอ ทุก 4 ชั่วโมง",
+    "restricted_populations": [
+      "ผู้ป่วยเบาหวานที่ควบคุมไม่ได้ (มีน้ำตาลปริมาณสูง)"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่พบรายงานความเป็นพิษ",
+      "kidney_toxicity": "ไม่พบรายงานความเป็นพิษ"
+    },
+    "drug_interactions": [],
+    "adverse_effects": [
+      "ท้องเสีย"
+    ]
+  },
+  {
+    "id": 8,
+    "indication": "บรรเทาอาการไอ ขับเสมหะ",
+    "conventional_drug": "ยาบรรเทาอาการไอ",
+    "herbal_drug": "ยาตรีผลา",
+    "dosage_and_administration": "ชนิดชง: 1 - 2 กรัม ชงน้ำร้อน 120 - 200 มล. ดื่มขณะอุ่นทุก 4 ชั่วโมง / ชนิดแคปซูล/เม็ด: 300 - 600 มก. วันละ 3 - 4 ครั้ง เมื่อมีอาการ",
+    "restricted_populations": [
+      "ผู้ป่วยที่ท้องเสียง่าย"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่พบรายงานความเป็นพิษ",
+      "kidney_toxicity": "ไม่พบรายงานความเป็นพิษ"
+    },
+    "drug_interactions": [],
+    "adverse_effects": [
+      "ท้องเสีย"
+    ]
+  },
+  {
+    "id": 9,
+    "indication": "บรรเทาอาการท้องผูก",
+    "conventional_drug": "Bisacodyl",
+    "herbal_drug": "ยามะขามแขก",
+    "dosage_and_administration": "ชนิดชง: 2 กรัม แช่น้ำร้อน 120 - 200 มล. นาน 10 นาที / ชนิดแคปซูล/เม็ด: 800 มก. - 1.2 กรัม ก่อนนอน",
+    "restricted_populations": [
+      "ผู้ที่มีภาวะทางเดินอาหารอุดตัน",
+      "ผู้ที่มีอาการปวดท้องโดยไม่ทราบสาเหตุ",
+      "เด็กอายุต่ำกว่า 12 ปี",
+      "ผู้ป่วย Inflammatory Bowel Disease (IBD)",
+      "หญิงตั้งครรภ์และให้นมบุตร"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่พบรายงานโดยตรง",
+      "kidney_toxicity": "การรับประทานในขนาดสูงอาจทำให้ไตอักเสบ (Nephritis)"
+    },
+    "drug_interactions": [
+      "Digoxin (เพิ่มอาการข้างเคียงของยา)",
+      "Corticosteroids, Diuretics, Theophylline (อาจทำให้เกิดภาวะโพแทสเซียมในเลือดต่ำ)"
+    ],
+    "adverse_effects": [
+      "ปวดมวนท้อง",
+      "ผื่นคัน"
+    ]
+  },
+  {
+    "id": 10,
+    "indication": "อาการปวดเมื่อยร่างกาย กล้ามเนื้ออักเสบ",
+    "conventional_drug": "NSAIDs",
+    "herbal_drug": "ยาเถาวัลย์เปรียง",
+    "dosage_and_administration": "ผงบดหรือสารสกัด 500 มก. - 1 กรัม วันละ 3 ครั้ง หลังอาหารทันที",
+    "restricted_populations": [
+      "หญิงตั้งครรภ์",
+      "ผู้ป่วยที่เป็นแผลในกระเพาะอาหาร"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่พบรายงานความเป็นพิษ",
+      "kidney_toxicity": "ไม่พบรายงานความเป็นพิษ"
+    },
+    "drug_interactions": [
+      "Paracetamol",
+      "Diclofenac"
+    ],
+    "adverse_effects": [
+      "ปวดท้อง",
+      "ท้องผูก",
+      "ปัสสาวะบ่อย",
+      "คอแห้ง",
+      "วิงเวียนศีรษะ",
+      "ใจสั่น"
+    ]
+  },
+  {
+    "id": 11,
+    "indication": "ยาใช้ภายนอก แก้ปวด บวม ฟกช้ำ เคล็ดยอก",
+    "conventional_drug": "Balm, NSAIDs gel",
+    "herbal_drug": "ยาไพล",
+    "dosage_and_administration": "ทาและถูเบาๆ บริเวณที่มีอาการ วันละ 2 - 3 ครั้ง",
+    "restricted_populations": [],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)",
+      "kidney_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)"
+    },
+    "drug_interactions": [],
+    "adverse_effects": []
+  },
+  {
+    "id": 12,
+    "indication": "บรรเทาอาการปวดข้อ ปวดกล้ามเนื้อ",
+    "conventional_drug": "Balm, NSAIDs gel",
+    "herbal_drug": "เจลพริก",
+    "dosage_and_administration": "ทาบริเวณที่ปวด วันละ 3 - 4 ครั้ง",
+    "restricted_populations": [
+      "ผู้ป่วยที่แพ้ Capsaicin"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)",
+      "kidney_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)"
+    },
+    "drug_interactions": [],
+    "adverse_effects": [
+      "การระคายเคืองผิวหนัง"
+    ]
+  },
+  {
+    "id": 13,
+    "indication": "ยาใช้ภายนอก แก้ปวด บวม ฟกช้ำ เคล็ดยอก",
+    "conventional_drug": "Balm, NSAIDs gel",
+    "herbal_drug": "ยาประคบ",
+    "dosage_and_administration": "ประคบบริเวณที่มีอาการ วันละ 1 - 2 ครั้ง",
+    "restricted_populations": [],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)",
+      "kidney_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)"
+    },
+    "drug_interactions": [],
+    "adverse_effects": [
+      "การระคายเคืองผิวหนัง"
+    ]
+  },
+  {
+    "id": 14,
+    "indication": "ริดสีดวงทวาร",
+    "conventional_drug": "Daflon",
+    "herbal_drug": "ยาผสมเพชรสังฆาต",
+    "dosage_and_administration": "สูตร 1: ครั้งละ 1.2 กรัม วันละ 3 ครั้ง หลังอาหารทันที เช้า กลางวัน เย็น / สูตร 2: ครั้งละ 500 มก. - 1 กรัม วันละ 3 ครั้ง หลังอาหารทันที เช้า กลางวัน เย็น",
+    "restricted_populations": [
+      "หญิงตั้งครรภ์",
+      "หญิงให้นมบุตร",
+      "ผู้ป่วยที่มีภาวะตับบกพร่อง"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่พบรายงานความเป็นพิษ",
+      "kidney_toxicity": "ไม่พบรายงานความเป็นพิษ"
+    },
+    "drug_interactions": [],
+    "adverse_effects": [
+      "ท้องเสีย",
+      "มวนท้อง"
+    ]
+  },
+  {
+    "id": 15,
+    "indication": "คลายกล้ามเนื้อ",
+    "conventional_drug": "Muscle relaxant",
+    "herbal_drug": "ยาแก้ลมแก้เส้น",
+    "dosage_and_administration": "รับประทานครั้งละ 1 - 4 กรัม วันละ 2 ครั้ง เช้าและเย็น ก่อนอาหาร",
+    "restricted_populations": [
+      "หญิงตั้งครรภ์",
+      "หญิงให้นมบุตร",
+      "ผู้ที่มีไข้",
+      "ระวังในผู้ป่วยโรคแผลเปปติกและโรคกรดไหลย้อน (ตำรับยารสร้อน)"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่พบรายงานความเป็นพิษ",
+      "kidney_toxicity": "ไม่พบรายงานความเป็นพิษ"
+    },
+    "drug_interactions": [],
+    "adverse_effects": [
+      "วิงเวียนศีรษะ",
+      "มึนงง",
+      "คอแห้ง",
+      "แสบร้อนกลางอก"
+    ]
+  },
+  {
+    "id": 16,
+    "indication": "แผลไฟไหม้ น้ำร้อนลวก",
+    "conventional_drug": "Silver sulfadiazine",
+    "herbal_drug": "เจลว่านหางจระเข้",
+    "dosage_and_administration": "ทาบริเวณผิวหนังที่ถูกไฟไหม้น้ำร้อนลวก วันละ 3 - 4 ครั้ง หรือตามแพทย์สั่ง",
+    "restricted_populations": [
+      "ผู้ที่แพ้ว่านหางจระเข้"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)",
+      "kidney_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)"
+    },
+    "drug_interactions": [],
+    "adverse_effects": [
+      "ผื่นแดง",
+      "ผื่นแพ้สัมผัส"
+    ]
+  },
+  {
+    "id": 17,
+    "indication": "แผลไฟไหม้ น้ำร้อนลวก",
+    "conventional_drug": "Wound healing agent",
+    "herbal_drug": "ครีมบัวบก",
+    "dosage_and_administration": "ทาบริเวณที่เป็นแผล (หลังทำความสะอาดแผลด้วยยาฆ่าเชื้อ) วันละ 1 - 3 ครั้ง หรือตามแพทย์สั่ง",
+    "restricted_populations": [
+      "ผู้ป่วยที่แพ้พืชในวงศ์ Apiaceae (ยี่หร่า ผักชี)",
+      "ผู้ที่มีประวัติเป็นโรคมะเร็งผิวหนัง",
+      "ห้ามใช้ในแผลเปิด"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)",
+      "kidney_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)"
+    },
+    "drug_interactions": [],
+    "adverse_effects": [
+      "ผื่นแพ้สัมผัส"
+    ]
+  },
+  {
+    "id": 18,
+    "indication": "บรรเทาอาการเริมและงูสวัด แผลในปาก อาการผดผื่นคัน ลมพิษ อาการอักเสบ ปวด บวม จากแมลงกัดต่อย",
+    "conventional_drug": "Acyclovir cream, TA oral paste, Calamine lotion",
+    "herbal_drug": "พญายอ (ครีมพญายอ, กลีเซอรีนพญายอ, คาลาไมน์พญายอ)",
+    "dosage_and_administration": "ทาบริเวณที่มีอาการของเริม งูสวัด แผลร้อนใน หรือผื่นคัน วันละ 5 ครั้ง",
+    "restricted_populations": [],
+    "organ_toxicity": {
+      "liver_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)",
+      "kidney_toxicity": "ไม่ระบุข้อมูล (ยาใช้ภายนอก)"
+    },
+    "drug_interactions": [],
+    "adverse_effects": []
+  },
+  {
+    "id": 19,
+    "indication": "อาการปวดเมื่อยร่างกาย กล้ามเนื้ออักเสบ",
+    "conventional_drug": "NSAIDs",
+    "herbal_drug": "ยาสหัสธารา",
+    "dosage_and_administration": "รับประทานครั้งละ 1 - 1.5 กรัม วันละ 3 ครั้ง หลังอาหาร เช้า กลางวัน เย็น",
+    "restricted_populations": [
+      "หญิงตั้งครรภ์",
+      "ผู้ที่มีไข้",
+      "ระวังในผู้ป่วยโรคความดันเลือดสูง โรคหัวใจ แผลเปปติก และกรดไหลย้อน (ตำรับยารสร้อน)"
+    ],
+    "organ_toxicity": {
+      "liver_toxicity": "ระวังการใช้อย่างต่อเนื่อง อาจเกิดการสะสมของการบูรและเกิดพิษต่อตับได้",
+      "kidney_toxicity": "ระวังการใช้อย่างต่อเนื่อง อาจเกิดการสะสมของการบูรและเกิดพิษต่อไตได้"
+    },
+    "drug_interactions": [
+      "Phenytoin",
+      "Propranolol",
+      "Theophylline",
+      "Rifampicin (เนื่องจากมีพริกไทยในปริมาณสูง)"
+    ],
+    "adverse_effects": [
+      "ร้อนท้อง",
+      "แสบท้อง",
+      "คลื่นไส้",
+      "คอแห้ง",
+      "ผื่นคัน"
+    ]
+  }
+]
