@@ -123,7 +123,7 @@ export default function HerbalSubstituteModal({ profile, onClose }: HerbalSubsti
         {/* ── 1. Modal Top Header ── */}
         <div className="flex items-start justify-between border-b border-neutral-100 pb-4">
           <div className="flex items-start gap-3.5">
-            <div className="w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-emerald-100 shadow-sm bg-emerald-50 mt-0.5 p-1 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-brand-border-subtle/80 shadow-3xs flex items-center justify-center">
               <FeatureVisualSubstitute className="w-full h-full" />
             </div>
             <div className="min-w-0">
@@ -147,10 +147,10 @@ export default function HerbalSubstituteModal({ profile, onClose }: HerbalSubsti
             type="button"
             onClick={onClose} 
             aria-label="ปิดหน้าต่าง"
-            className="w-11 h-11 min-w-[44px] min-h-[44px] -mr-1.5 flex items-center justify-center text-neutral-600 hover:text-neutral-900 rounded-full cursor-pointer hover:bg-neutral-100 transition-colors shrink-0"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] -mr-1.5 flex items-center justify-center text-neutral-600 hover:text-neutral-900 rounded-full cursor-pointer hover:bg-neutral-100 transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
             title="ปิดหน้าต่าง"
           >
-            <span aria-hidden="true" className="material-symbols-outlined text-2xl">close</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-xl">close</span>
           </button>
         </div>
 

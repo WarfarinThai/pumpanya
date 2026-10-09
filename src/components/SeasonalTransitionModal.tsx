@@ -20,13 +20,13 @@ export default function SeasonalTransitionModal({ onClose }: SeasonalTransitionM
       onClose={onClose}
       maxWidth="max-w-md"
       maxHeight="max-h-[90vh]"
-      overlayClassName="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in"
-      className="bg-white rounded-3xl w-full overflow-y-auto p-5 shadow-2xl border border-border-default flex flex-col gap-4"
+      overlayClassName="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 animate-fade-in"
+      className="bg-white rounded-3xl w-full overflow-y-auto p-5 sm:p-6 shadow-2xl border border-border-default flex flex-col gap-4"
     >
         {/* Header */}
-        <div className="flex items-center justify-between border-b pb-3">
+        <div className="flex items-center justify-between border-b border-neutral-100 pb-3.5">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl overflow-hidden shrink-0 border border-teal-100 shadow-xs bg-teal-50 p-1 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-brand-border-subtle/80 shadow-3xs flex items-center justify-center">
               <FeatureVisualSeason className="w-full h-full" />
             </div>
             <div>
@@ -38,7 +38,7 @@ export default function SeasonalTransitionModal({ onClose }: SeasonalTransitionM
             type="button"
             onClick={onClose}
             aria-label="ปิดหน้าต่าง"
-            className="w-11 h-11 min-w-[44px] min-h-[44px] -mr-1.5 flex items-center justify-center text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-full cursor-pointer transition-colors shrink-0"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] -mr-1.5 flex items-center justify-center text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-full cursor-pointer transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             <span aria-hidden="true" className="material-symbols-outlined text-xl">close</span>
           </button>
@@ -102,7 +102,7 @@ export default function SeasonalTransitionModal({ onClose }: SeasonalTransitionM
         <button
           type="button"
           onClick={onClose}
-          className="w-full h-11 rounded-xl bg-brand-primary text-white font-bold text-sm hover:bg-brand-hover transition-all"
+          className="w-full h-11 rounded-2xl bg-brand-primary text-white font-bold text-sm hover:bg-brand-hover transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
           เข้าใจวิธีรับมือไข้เปลี่ยนฤดู
         </button>

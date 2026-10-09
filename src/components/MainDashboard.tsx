@@ -228,7 +228,7 @@ export default function MainDashboard({
           onClick={() => handleOpenModal('born-vs-current')}
           className="w-full text-left bg-white p-3 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-3 sm:gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shrink-0 border border-brand-border-subtle shadow-xs group-hover:scale-105 transition-transform bg-brand-surface p-1 flex items-center justify-center">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden shrink-0 border border-brand-border-subtle/80 shadow-3xs group-hover:scale-105 transition-transform flex items-center justify-center">
             <FeatureVisualBirth className="w-full h-full" />
           </div>
           <div className="flex-1 min-w-0">
@@ -246,9 +246,9 @@ export default function MainDashboard({
           type="button"
           id="feature-card-seasonal-transition"
           onClick={() => handleOpenModal('seasonal-transition')}
-          className="w-full text-left bg-white p-3.5 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="w-full text-left bg-white p-3 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-3 sm:gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
-          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-brand-border-subtle shadow-xs group-hover:scale-105 transition-transform bg-brand-surface p-1 flex items-center justify-center">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden shrink-0 border border-brand-border-subtle/80 shadow-3xs group-hover:scale-105 transition-transform flex items-center justify-center">
             <FeatureVisualSeason className="w-full h-full" />
           </div>
           <div className="flex-1 min-w-0">
@@ -256,7 +256,7 @@ export default function MainDashboard({
               2. ปรับสมดุลตามฤดูกาล &amp; ไข้หัวลม
             </h3>
           </div>
-          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-2xl shrink-0 transition-colors">
+          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-xl sm:text-2xl shrink-0 transition-colors">
             chevron_right
           </span>
         </button>
@@ -266,9 +266,9 @@ export default function MainDashboard({
           type="button"
           id="feature-card-organ-safety"
           onClick={() => handleOpenModal('organ-safety')}
-          className="w-full text-left bg-white p-3.5 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="w-full text-left bg-white p-3 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-3 sm:gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
-          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-brand-border-subtle shadow-xs group-hover:scale-105 transition-transform bg-brand-surface p-1 flex items-center justify-center">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden shrink-0 border border-brand-border-subtle/80 shadow-3xs group-hover:scale-105 transition-transform flex items-center justify-center">
             <FeatureVisualSafety className="w-full h-full" />
           </div>
           <div className="flex-1 min-w-0">
@@ -276,7 +276,7 @@ export default function MainDashboard({
               3. ข้อมูลความปลอดภัยของสมุนไพร
             </h3>
           </div>
-          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-2xl shrink-0 transition-colors">
+          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-xl sm:text-2xl shrink-0 transition-colors">
             chevron_right
           </span>
         </button>
@@ -286,9 +286,9 @@ export default function MainDashboard({
           type="button"
           id="feature-card-drug-interaction"
           onClick={() => handleOpenModal('drug-interaction')}
-          className="w-full text-left bg-white p-3.5 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="w-full text-left bg-white p-3 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-3 sm:gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
-          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-brand-border-subtle shadow-xs group-hover:scale-105 transition-transform bg-brand-surface p-1 flex items-center justify-center">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden shrink-0 border border-brand-border-subtle/80 shadow-3xs group-hover:scale-105 transition-transform flex items-center justify-center">
             <FeatureVisualInteraction className="w-full h-full" />
           </div>
           <div className="flex-1 min-w-0">
@@ -296,7 +296,7 @@ export default function MainDashboard({
               4. ตรวจสอบยาตีกัน &amp; รสยาขัดแย้ง
             </h3>
           </div>
-          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-2xl shrink-0 transition-colors">
+          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-xl sm:text-2xl shrink-0 transition-colors">
             chevron_right
           </span>
         </button>
@@ -306,9 +306,9 @@ export default function MainDashboard({
           type="button"
           id="feature-card-g2c-registry"
           onClick={() => handleOpenModal('g2c-registry')}
-          className="w-full text-left bg-white p-3.5 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="w-full text-left bg-white p-3 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-3 sm:gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
-          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-brand-border-subtle shadow-xs group-hover:scale-105 transition-transform bg-brand-surface p-1 flex items-center justify-center">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden shrink-0 border border-brand-border-subtle/80 shadow-3xs group-hover:scale-105 transition-transform flex items-center justify-center">
             <FeatureVisualRegistry className="w-full h-full" />
           </div>
           <div className="flex-1 min-w-0">
@@ -316,7 +316,7 @@ export default function MainDashboard({
               5. ตรวจสอบทะเบียนยาออนไลน์
             </h3>
           </div>
-          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-2xl shrink-0 transition-colors">
+          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-xl sm:text-2xl shrink-0 transition-colors">
             chevron_right
           </span>
         </button>
@@ -326,9 +326,9 @@ export default function MainDashboard({
           type="button"
           id="feature-card-symptom-guideline"
           onClick={() => handleOpenModal('symptom-guideline')}
-          className="w-full text-left bg-white p-3.5 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="w-full text-left bg-white p-3 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-3 sm:gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
-          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-brand-border-subtle shadow-xs group-hover:scale-105 transition-transform bg-brand-surface p-1 flex items-center justify-center">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden shrink-0 border border-brand-border-subtle/80 shadow-3xs group-hover:scale-105 transition-transform flex items-center justify-center">
             <FeatureVisualSymptom className="w-full h-full" />
           </div>
           <div className="flex-1 min-w-0">
@@ -336,7 +336,7 @@ export default function MainDashboard({
               6. ยาสมุนไพรตามกลุ่มอาการ
             </h3>
           </div>
-          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-2xl shrink-0 transition-colors">
+          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-xl sm:text-2xl shrink-0 transition-colors">
             chevron_right
           </span>
         </button>
@@ -346,9 +346,9 @@ export default function MainDashboard({
           type="button"
           id="feature-card-herbal-substitute"
           onClick={() => handleOpenModal('herbal-substitute')}
-          className="w-full text-left bg-white p-3.5 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="w-full text-left bg-white p-3 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-3 sm:gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
-          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-brand-border-subtle shadow-xs group-hover:scale-105 transition-transform bg-brand-surface p-1 flex items-center justify-center">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden shrink-0 border border-brand-border-subtle/80 shadow-3xs group-hover:scale-105 transition-transform flex items-center justify-center">
             <FeatureVisualSubstitute className="w-full h-full" />
           </div>
           <div className="flex-1 min-w-0">
@@ -356,7 +356,7 @@ export default function MainDashboard({
               7. ยาสมุนไพรที่ใช้ทดแทนยาแผนปัจจุบัน
             </h3>
           </div>
-          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-2xl shrink-0 transition-colors">
+          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-xl sm:text-2xl shrink-0 transition-colors">
             chevron_right
           </span>
         </button>

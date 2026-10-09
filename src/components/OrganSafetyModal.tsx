@@ -167,7 +167,7 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
         <div className="flex flex-col border-b border-neutral-100 pb-4 gap-2.5">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl overflow-hidden shrink-0 border border-emerald-100 shadow-xs bg-emerald-50 p-1 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-brand-border-subtle/80 shadow-3xs flex items-center justify-center">
                 <FeatureVisualSafety className="w-full h-full" />
               </div>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 truncate">
@@ -180,10 +180,10 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
               type="button"
               onClick={onClose} 
               aria-label="ปิดหน้าต่าง"
-              className="w-11 h-11 min-w-[44px] min-h-[44px] -mr-1.5 flex items-center justify-center text-neutral-600 hover:text-neutral-900 rounded-full cursor-pointer hover:bg-neutral-100 transition-colors shrink-0"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] -mr-1.5 flex items-center justify-center text-neutral-600 hover:text-neutral-900 rounded-full cursor-pointer hover:bg-neutral-100 transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
               title="ปิดหน้าต่าง"
             >
-              <span aria-hidden="true" className="material-symbols-outlined text-2xl">close</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-xl">close</span>
             </button>
           </div>
           <h2 id="organ-safety-modal-title" className="text-base sm:text-xl font-bold text-brand-primary leading-snug">

@@ -155,7 +155,7 @@ export default function SymptomGuidelineModal({ profile, onClose }: SymptomGuide
         {/* Modal Header */}
         <div className="flex items-center justify-between p-4 sm:p-5 border-b border-border-default bg-white">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-emerald-100 shadow-xs bg-emerald-50 p-1 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-brand-border-subtle/80 shadow-3xs flex items-center justify-center">
               <FeatureVisualSymptom className="w-full h-full" />
             </div>
             <div>
@@ -168,7 +168,7 @@ export default function SymptomGuidelineModal({ profile, onClose }: SymptomGuide
             type="button"
             onClick={onClose}
             aria-label="ปิดหน้าต่าง"
-            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 flex items-center justify-center transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             <span aria-hidden="true" className="material-symbols-outlined text-xl">close</span>
           </button>
@@ -477,7 +477,7 @@ export default function SymptomGuidelineModal({ profile, onClose }: SymptomGuide
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-brand-primary text-white font-bold text-xs hover:bg-brand-hover transition-colors cursor-pointer"
+            className="px-5 py-2.5 rounded-xl bg-brand-primary text-white font-bold text-xs hover:bg-brand-hover transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             ปิดหน้าต่าง
           </button>

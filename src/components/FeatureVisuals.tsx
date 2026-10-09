@@ -25,7 +25,7 @@ interface FeatureVisualProps {
 export function FeatureVisualBirth({ className = 'w-full h-full' }: FeatureVisualProps) {
   return (
     <div
-      className={`relative flex items-center justify-center select-none overflow-hidden rounded-xl bg-gradient-to-br from-[#fcfbf9] to-[#f4f8f5] ${className}`}
+      className={`relative flex items-center justify-center select-none overflow-hidden rounded-2xl bg-gradient-to-br from-[#fcfbf9] to-[#f4f8f5] ${className}`}
       aria-hidden="true"
     >
       {/* Soft Layer 1: Ambient offset organic aura */}
@@ -52,7 +52,7 @@ export function FeatureVisualBirth({ className = 'w-full h-full' }: FeatureVisua
 export function FeatureVisualSeason({ className = 'w-full h-full' }: FeatureVisualProps) {
   return (
     <div
-      className={`relative flex items-center justify-center select-none overflow-hidden rounded-xl bg-gradient-to-br from-[#fbfdfc] to-[#f0f8f4] ${className}`}
+      className={`relative flex items-center justify-center select-none overflow-hidden rounded-2xl bg-gradient-to-br from-[#fbfdfc] to-[#f0f8f4] ${className}`}
       aria-hidden="true"
     >
       {/* Soft Layer 1: Ambient seasonal movement aura */}
@@ -63,7 +63,7 @@ export function FeatureVisualSeason({ className = 'w-full h-full' }: FeatureVisu
         {/* Dominant Material Symbol */}
         <span
           className="material-symbols-outlined text-[24px] text-emerald-800 rotate-3 transition-transform group-hover:scale-105"
-          style={{ fontVariationSettings: "'FILL' 0, 'wght' 500, 'opsz' 24" }}
+          style={{ fontVariationSettings: "'FILL' 1, 'wght' 500, 'opsz' 24" }}
         >
           autorenew
         </span>
@@ -79,7 +79,7 @@ export function FeatureVisualSeason({ className = 'w-full h-full' }: FeatureVisu
 export function FeatureVisualSafety({ className = 'w-full h-full' }: FeatureVisualProps) {
   return (
     <div
-      className={`relative flex items-center justify-center select-none overflow-hidden rounded-xl bg-gradient-to-br from-[#fcfdfc] to-[#f2f8f5] ${className}`}
+      className={`relative flex items-center justify-center select-none overflow-hidden rounded-2xl bg-gradient-to-br from-[#fcfdfc] to-[#f2f8f5] ${className}`}
       aria-hidden="true"
     >
       {/* Soft Layer 1: Ambient health protection aura */}
@@ -106,7 +106,7 @@ export function FeatureVisualSafety({ className = 'w-full h-full' }: FeatureVisu
 export function FeatureVisualInteraction({ className = 'w-full h-full' }: FeatureVisualProps) {
   return (
     <div
-      className={`relative flex items-center justify-center select-none overflow-hidden rounded-xl bg-gradient-to-br from-[#fafcff] to-[#f0f6fa] ${className}`}
+      className={`relative flex items-center justify-center select-none overflow-hidden rounded-2xl bg-gradient-to-br from-[#fafcff] to-[#f0f6fa] ${className}`}
       aria-hidden="true"
     >
       {/* Soft Layer 1: Ambient medication relationship aura */}
@@ -133,7 +133,7 @@ export function FeatureVisualInteraction({ className = 'w-full h-full' }: Featur
 export function FeatureVisualRegistry({ className = 'w-full h-full' }: FeatureVisualProps) {
   return (
     <div
-      className={`relative flex items-center justify-center select-none overflow-hidden rounded-xl bg-gradient-to-br from-[#fcfdfc] to-[#f2f7f4] ${className}`}
+      className={`relative flex items-center justify-center select-none overflow-hidden rounded-2xl bg-gradient-to-br from-[#fcfdfc] to-[#f2f7f4] ${className}`}
       aria-hidden="true"
     >
       {/* Soft Layer 1: Ambient official verification aura */}
@@ -160,7 +160,7 @@ export function FeatureVisualRegistry({ className = 'w-full h-full' }: FeatureVi
 export function FeatureVisualSymptom({ className = 'w-full h-full' }: FeatureVisualProps) {
   return (
     <div
-      className={`relative flex items-center justify-center select-none overflow-hidden rounded-xl bg-gradient-to-br from-[#fdfbf8] to-[#f6f3ed] ${className}`}
+      className={`relative flex items-center justify-center select-none overflow-hidden rounded-2xl bg-gradient-to-br from-[#fdfbf8] to-[#f6f3ed] ${className}`}
       aria-hidden="true"
     >
       {/* Soft Layer 1: Ambient clinical assessment aura */}
@@ -187,7 +187,7 @@ export function FeatureVisualSymptom({ className = 'w-full h-full' }: FeatureVis
 export function FeatureVisualSubstitute({ className = 'w-full h-full' }: FeatureVisualProps) {
   return (
     <div
-      className={`relative flex items-center justify-center select-none overflow-hidden rounded-xl bg-gradient-to-br from-[#fcfdfc] to-[#f2f8f5] ${className}`}
+      className={`relative flex items-center justify-center select-none overflow-hidden rounded-2xl bg-gradient-to-br from-[#fcfdfc] to-[#f2f8f5] ${className}`}
       aria-hidden="true"
     >
       {/* Soft Layer 1: Ambient dual-path consideration aura */}

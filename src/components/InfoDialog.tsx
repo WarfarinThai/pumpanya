@@ -183,7 +183,7 @@ export default function InfoDialog({
         ) : (
           <>
             {/* Dialog Header */}
-            <div className="flex items-center justify-between border-b border-neutral-100 pb-3 shrink-0">
+            <div className="flex items-center justify-between border-b border-neutral-100 pb-3.5 shrink-0">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-10 h-10 rounded-2xl bg-brand-primary flex items-center justify-center text-white shrink-0 shadow-xs">
                   <span
@@ -211,7 +211,7 @@ export default function InfoDialog({
                 type="button"
                 onClick={onClose}
                 aria-label={closeLabel}
-                className="w-11 h-11 min-w-[44px] min-h-[44px] -mr-1.5 flex items-center justify-center text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-full cursor-pointer transition-colors shrink-0 focus:outline-none focus:ring-2 focus:ring-brand-primary/40"
+                className="w-11 h-11 min-w-[44px] min-h-[44px] -mr-1.5 flex items-center justify-center text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-full cursor-pointer transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
               >
                 <span aria-hidden="true" className="material-symbols-outlined text-xl">close</span>
               </button>
@@ -231,7 +231,7 @@ export default function InfoDialog({
                 ref={closeButtonRef}
                 type="button"
                 onClick={onClose}
-                className="w-full h-11 rounded-xl bg-brand-primary hover:bg-brand-hover text-white font-bold text-xs sm:text-sm transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2"
+                className="w-full h-11 rounded-2xl bg-brand-primary hover:bg-brand-hover text-white font-bold text-xs sm:text-sm transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
               >
                 {closeLabel}
               </button>
