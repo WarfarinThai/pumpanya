@@ -6,6 +6,7 @@ import {
 } from '../services/supabaseHerbalComparisons';
 import ErrorState from './ErrorState';
 import InfoDialog from './InfoDialog';
+import { FeatureVisualSubstitute } from './FeatureVisuals';
 
 interface HerbalSubstituteModalProps {
   profile: HealthProfile;
@@ -122,16 +123,8 @@ export default function HerbalSubstituteModal({ profile, onClose }: HerbalSubsti
         {/* ── 1. Modal Top Header ── */}
         <div className="flex items-start justify-between border-b border-neutral-100 pb-4">
           <div className="flex items-start gap-3.5">
-            <div className="w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-emerald-100 shadow-sm bg-emerald-50 mt-0.5">
-              <img 
-                src="/images/step7_designer.webp" 
-                alt="ยาสมุนไพรที่ใช้ทดแทนยาแผนปัจจุบัน"
-                className="w-full h-full object-cover"
-                loading="lazy"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = 'https://vwueyfmqutuajcgstdrd.supabase.co/storage/v1/object/public/picture/Designer.png';
-                }}
-              />
+            <div className="w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-emerald-100 shadow-sm bg-emerald-50 mt-0.5 p-1 flex items-center justify-center">
+              <FeatureVisualSubstitute className="w-full h-full" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2 flex-wrap">

@@ -14,24 +14,24 @@ export default function WelcomeGate({ onAccept }: WelcomeGateProps) {
       <div className="w-full bg-white rounded-3xl p-6 shadow-sm border border-border-default flex flex-col items-center text-center">
         
         {/* Emblem Logo */}
-        <div className="w-24 h-24 rounded-3xl bg-white flex items-center justify-center p-2 mb-3 shadow-sm border border-brand-border-subtle overflow-hidden">
+        <div className="w-24 h-24 flex items-center justify-center mb-3 shrink-0">
           <img
             src="/logo.png"
             alt="ภูมิปัญญา | PUM PANYA"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain scale-125"
             referrerPolicy="no-referrer"
           />
         </div>
 
-        {/* Title */}
-        <span className="text-xs font-bold text-brand-secondary bg-brand-surface px-3 py-1 rounded-full border border-brand-border-subtle tracking-wide mb-1.5">
-          Old Wisdom. New Vibes. • ภูมิปัญญาเก่า แต่เล่าใหม่
-        </span>
-        <h1 className="text-2xl font-bold text-brand-primary mt-1">
+        {/* Title & Official Motto */}
+        <h1 className="text-2xl sm:text-3xl font-bold text-brand-primary tracking-tight">
           ภูมิปัญญา | PUM PANYA
         </h1>
-        <p className="text-xs font-semibold text-text-muted mt-0.5">
-          Thai Herbal Wisdom, With You.
+        <p className="text-sm font-semibold text-brand-secondary mt-1">
+          Old Wisdom. New Vibes.
+        </p>
+        <p className="text-xs font-medium text-text-muted mt-0.5">
+          ภูมิปัญญาเก่า แต่เล่าใหม่
         </p>
 
         {/* Core Pillars (5 Highlights) */}

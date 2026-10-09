@@ -12,42 +12,40 @@ export default function Header({ onExit, showExit = false }: HeaderProps) {
   return (
     <>
       <header className="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-xl border-b border-border-default shadow-header pt-[max(env(safe-area-inset-top),0.75rem)] pb-2.5">
-        <div className="px-4 md:px-6 lg:px-8 flex items-center justify-between max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-11 h-11 rounded-2xl bg-white flex items-center justify-center p-1 shrink-0 border border-brand-border-subtle shadow-xs overflow-hidden">
+        <div className="px-3 sm:px-6 lg:px-8 flex items-center justify-between max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center shrink-0">
               <img
                 src="/logo.png"
                 alt="ภูมิปัญญา | PUM PANYA"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain scale-125"
                 referrerPolicy="no-referrer"
               />
             </div>
             <div className="flex flex-col min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-thai-header text-lg sm:text-xl text-brand-primary font-bold leading-none tracking-tight">
-                  ภูมิปัญญา | PUM PANYA
-                </span>
-              </div>
+              <span className="font-thai-header text-sm sm:text-lg md:text-xl text-brand-primary font-bold leading-tight tracking-tight whitespace-nowrap">
+                ภูมิปัญญา | PUM PANYA
+              </span>
               <span className="text-[11px] sm:text-xs font-medium text-text-muted truncate mt-0.5">
-                Old Wisdom. New Vibes. • ภูมิปัญญาเก่า แต่เล่าใหม่
+                <span className="hidden sm:inline">Old Wisdom. New Vibes. • </span>ภูมิปัญญาเก่า แต่เล่าใหม่
               </span>
             </div>
           </div>
           
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button 
               type="button"
               aria-label="ข้อกำหนดและคำชี้แจงทางการแพทย์" 
               aria-haspopup="dialog"
               aria-expanded={isAboutOpen}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-text-secondary hover:bg-neutral-100 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+              className="w-10 h-10 sm:w-11 sm:h-11 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full text-text-secondary hover:bg-neutral-100 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
               onClick={() => setIsAboutOpen(true)}
             >
-              <span aria-hidden="true" className="material-symbols-outlined text-[22px]">help_outline</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[20px] sm:text-[22px]">help_outline</span>
             </button>
 
-            <div className="w-9 h-9 rounded-full bg-emerald-100 text-brand-primary border border-emerald-300 flex items-center justify-center" aria-hidden="true">
-              <span aria-hidden="true" className="material-symbols-outlined text-[18px]">verified_user</span>
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-100 text-brand-primary border border-emerald-300 flex items-center justify-center" aria-hidden="true">
+              <span aria-hidden="true" className="material-symbols-outlined text-[16px] sm:text-[18px]">verified_user</span>
             </div>
           </div>
         </div>
