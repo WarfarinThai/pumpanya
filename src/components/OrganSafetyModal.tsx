@@ -164,33 +164,31 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
       className="bg-white rounded-3xl w-full overflow-y-auto p-5 sm:p-7 shadow-2xl border border-border-default flex flex-col gap-5"
     >
         {/* ── Modal Header ── */}
-        <div className="flex items-start justify-between border-b border-neutral-100 pb-4">
-          <div className="flex items-start gap-3.5">
-            <div className="w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-emerald-100 shadow-sm bg-emerald-50 mt-0.5 p-1 flex items-center justify-center">
-              <FeatureVisualSafety className="w-full h-full" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">
-                  {!loading && !error && herbs.length > 0
-                    ? `ฐานข้อมูลความปลอดภัย ${herbs.length} ชนิด`
-                    : 'ฐานข้อมูลความปลอดภัยสมุนไพร'}
-                </span>
+        <div className="flex flex-col border-b border-neutral-100 pb-4 gap-2.5">
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl overflow-hidden shrink-0 border border-emerald-100 shadow-xs bg-emerald-50 p-1 flex items-center justify-center">
+                <FeatureVisualSafety className="w-full h-full" />
               </div>
-              <h2 id="organ-safety-modal-title" className="text-lg sm:text-xl font-bold text-brand-primary leading-snug mt-1">
-                3. ข้อมูลความปลอดภัยของสมุนไพร (เฝ้าระวังตับ ไต ระยะเวลาใช้ และสตรีมีครรภ์)
-              </h2>
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 truncate">
+                {!loading && !error && herbs.length > 0
+                  ? `ฐานข้อมูลความปลอดภัย ${herbs.length} ชนิด`
+                  : 'ฐานข้อมูลความปลอดภัยสมุนไพร'}
+              </span>
             </div>
+            <button 
+              type="button"
+              onClick={onClose} 
+              aria-label="ปิดหน้าต่าง"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] -mr-1.5 flex items-center justify-center text-neutral-600 hover:text-neutral-900 rounded-full cursor-pointer hover:bg-neutral-100 transition-colors shrink-0"
+              title="ปิดหน้าต่าง"
+            >
+              <span aria-hidden="true" className="material-symbols-outlined text-2xl">close</span>
+            </button>
           </div>
-          <button 
-            type="button"
-            onClick={onClose} 
-            aria-label="ปิดหน้าต่าง"
-            className="w-11 h-11 min-w-[44px] min-h-[44px] -mr-1.5 flex items-center justify-center text-neutral-600 hover:text-neutral-900 rounded-full cursor-pointer hover:bg-neutral-100 transition-colors shrink-0"
-            title="ปิดหน้าต่าง"
-          >
-            <span aria-hidden="true" className="material-symbols-outlined text-2xl">close</span>
-          </button>
+          <h2 id="organ-safety-modal-title" className="text-base sm:text-xl font-bold text-brand-primary leading-snug">
+            3. ข้อมูลความปลอดภัยของสมุนไพร (เฝ้าระวังตับ ไต ระยะเวลาใช้ และสตรีมีครรภ์)
+          </h2>
         </div>
 
         {/* ── Content Area: 4 Distinct States (LOADING / ERROR / EMPTY / SUCCESS) ── */}
@@ -276,15 +274,17 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                 <button
                   type="button"
                   onClick={() => setActiveTab('liver-kidney')}
-                  className={`py-2.5 px-3 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
+                  className={`py-2 px-2.5 sm:px-3 rounded-xl transition-all cursor-pointer flex items-center justify-between gap-1.5 min-h-[44px] text-left ${
                     activeTab === 'liver-kidney'
                       ? 'bg-brand-primary text-white shadow-sm ring-1 ring-black/5'
                       : 'bg-transparent text-neutral-600 hover:text-neutral-900 hover:bg-white/60'
                   }`}
                 >
-                  <span aria-hidden="true" className="material-symbols-outlined text-base shrink-0">health_and_safety</span>
-                  <span className="truncate">ตับและไต</span>
-                  <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold shrink-0 ${
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <span aria-hidden="true" className="material-symbols-outlined text-base shrink-0">health_and_safety</span>
+                    <span className="leading-tight break-words">ตับและไต</span>
+                  </div>
+                  <span className={`text-[11px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold shrink-0 self-center ${
                     activeTab === 'liver-kidney' ? 'bg-emerald-800 text-white' : 'bg-neutral-200 text-neutral-700'
                   }`}>
                     {liverContraList.length + kidneyContraList.length}
@@ -294,15 +294,17 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                 <button
                   type="button"
                   onClick={() => setActiveTab('duration')}
-                  className={`py-2.5 px-3 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
+                  className={`py-2 px-2.5 sm:px-3 rounded-xl transition-all cursor-pointer flex items-center justify-between gap-1.5 min-h-[44px] text-left ${
                     activeTab === 'duration'
                       ? 'bg-brand-primary text-white shadow-sm ring-1 ring-black/5'
                       : 'bg-transparent text-neutral-600 hover:text-neutral-900 hover:bg-white/60'
                   }`}
                 >
-                  <span aria-hidden="true" className="material-symbols-outlined text-base shrink-0">schedule</span>
-                  <span className="truncate">ระยะเวลาสูงสุด</span>
-                  <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold shrink-0 ${
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <span aria-hidden="true" className="material-symbols-outlined text-base shrink-0">schedule</span>
+                    <span className="leading-tight break-words">ระยะเวลาสูงสุด</span>
+                  </div>
+                  <span className={`text-[11px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold shrink-0 self-center ${
                     activeTab === 'duration' ? 'bg-emerald-800 text-white' : 'bg-neutral-200 text-neutral-700'
                   }`}>
                     {durationList.length}
@@ -312,15 +314,17 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                 <button
                   type="button"
                   onClick={() => setActiveTab('maternal')}
-                  className={`py-2.5 px-3 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
+                  className={`py-2 px-2.5 sm:px-3 rounded-xl transition-all cursor-pointer flex items-center justify-between gap-1.5 min-h-[44px] text-left ${
                     activeTab === 'maternal'
                       ? 'bg-brand-primary text-white shadow-sm ring-1 ring-black/5'
                       : 'bg-transparent text-neutral-600 hover:text-neutral-900 hover:bg-white/60'
                   }`}
                 >
-                  <span aria-hidden="true" className="material-symbols-outlined text-base shrink-0">pregnant_woman</span>
-                  <span className="truncate">สตรีตั้งครรภ์/ให้นม</span>
-                  <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold shrink-0 ${
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <span aria-hidden="true" className="material-symbols-outlined text-base shrink-0">pregnant_woman</span>
+                    <span className="leading-tight break-words">สตรีตั้งครรภ์/ให้นม</span>
+                  </div>
+                  <span className={`text-[11px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold shrink-0 self-center ${
                     activeTab === 'maternal' ? 'bg-emerald-800 text-white' : 'bg-neutral-200 text-neutral-700'
                   }`}>
                     {pregnancyList.length}
@@ -330,15 +334,17 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                 <button
                   type="button"
                   onClick={() => setActiveTab('search')}
-                  className={`py-2.5 px-3 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
+                  className={`py-2 px-2.5 sm:px-3 rounded-xl transition-all cursor-pointer flex items-center justify-between gap-1.5 min-h-[44px] text-left ${
                     activeTab === 'search'
                       ? 'bg-brand-primary text-white shadow-sm ring-1 ring-black/5'
                       : 'bg-transparent text-neutral-600 hover:text-neutral-900 hover:bg-white/60'
                   }`}
                 >
-                  <span aria-hidden="true" className="material-symbols-outlined text-base shrink-0">menu_book</span>
-                  <span className="truncate">สารสนเทศ {herbs.length} ชนิด</span>
-                  <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold shrink-0 ${
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <span aria-hidden="true" className="material-symbols-outlined text-base shrink-0">menu_book</span>
+                    <span className="leading-tight break-words">สารสนเทศ {herbs.length} ชนิด</span>
+                  </div>
+                  <span className={`text-[11px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold shrink-0 self-center ${
                     activeTab === 'search' ? 'bg-emerald-800 text-white' : 'bg-neutral-200 text-neutral-700'
                   }`}>
                     {herbs.length}

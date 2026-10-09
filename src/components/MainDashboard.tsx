@@ -79,16 +79,16 @@ export default function MainDashboard({
       {/* ────────────────────────────────────────────────────────── */}
       {/* 1. TOP CARD: YOUR HEALTH & ELEMENT PROFILE                 */}
       {/* ────────────────────────────────────────────────────────── */}
-      <div className="w-full bg-white rounded-2xl p-5 shadow-xs border border-border-default flex flex-col gap-3.5">
+      <div className="w-full bg-white rounded-2xl p-4 sm:p-5 shadow-xs border border-border-default flex flex-col gap-3.5">
         
         {/* Card Header with generous spacing & clean layout */}
-        <div className="flex items-center justify-between gap-3 pb-2 border-b border-neutral-100">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-11 h-11 rounded-2xl bg-brand-primary text-white flex items-center justify-center shrink-0 shadow-xs" aria-hidden="true">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2.5 border-b border-neutral-100">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-brand-primary text-white flex items-center justify-center shrink-0 shadow-xs" aria-hidden="true">
               <span aria-hidden="true" className="material-symbols-outlined text-2xl">person</span>
             </div>
             <div className="flex flex-col min-w-0">
-              <h2 className="text-lg sm:text-xl font-bold text-brand-primary leading-tight">
+              <h2 className="text-base sm:text-xl font-bold text-brand-primary leading-snug">
                 ข้อมูลสุขภาพและธาตุของคุณ
               </h2>
             </div>
@@ -97,7 +97,7 @@ export default function MainDashboard({
           <button
             type="button"
             onClick={() => setIsEditingProfile(true)}
-            className="min-h-[44px] min-w-[44px] flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold text-brand-primary bg-brand-surface hover:bg-emerald-50 active:scale-95 px-3.5 py-2 rounded-xl border border-brand-border-subtle transition-all shrink-0 cursor-pointer shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold text-brand-primary bg-brand-surface hover:bg-emerald-50 active:scale-95 px-3.5 py-2 rounded-xl border border-brand-border-subtle transition-all shrink-0 cursor-pointer shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary self-start sm:self-auto"
           >
             <span aria-hidden="true" className="material-symbols-outlined text-base">edit</span>
             <span>แก้ไขข้อมูล</span>
@@ -226,9 +226,9 @@ export default function MainDashboard({
           type="button"
           id="feature-card-birth-element"
           onClick={() => handleOpenModal('born-vs-current')}
-          className="w-full text-left bg-white p-3.5 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="w-full text-left bg-white p-3 sm:p-4 rounded-2xl border border-border-default shadow-xs hover:border-emerald-300 hover:bg-emerald-50/15 transition-all flex items-center gap-3 sm:gap-4 group active:scale-[0.99] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
-          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-brand-border-subtle shadow-xs group-hover:scale-105 transition-transform bg-brand-surface p-1 flex items-center justify-center">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shrink-0 border border-brand-border-subtle shadow-xs group-hover:scale-105 transition-transform bg-brand-surface p-1 flex items-center justify-center">
             <FeatureVisualBirth className="w-full h-full" />
           </div>
           <div className="flex-1 min-w-0">
@@ -236,7 +236,7 @@ export default function MainDashboard({
               1. ธาตุเจ้าเรือนเกิด และอาหารปรับสมดุลธาตุ
             </h3>
           </div>
-          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-2xl shrink-0 transition-colors">
+          <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 group-hover:text-brand-primary text-xl sm:text-2xl shrink-0 transition-colors">
             chevron_right
           </span>
         </button>

@@ -84,6 +84,49 @@ export default function ElementRadarSpider({ birthElement, birthMonth, onRequest
   // Concentric radar ring levels (25%, 50%, 75%, 100%)
   const gridLevels = [0.25, 0.50, 0.75, 1.0];
 
+  // Compact empty-state presentation when birthElement is absent
+  if (!birthElement) {
+    return (
+      <div className="w-full flex flex-col bg-gradient-to-b from-white via-amber-50/30 to-amber-50/50 rounded-2xl p-4 sm:p-5 border border-amber-200/80 shadow-xs">
+        <div className="flex items-center justify-between gap-2 pb-3 border-b border-amber-100">
+          <div className="flex items-center gap-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+            <h3 className="text-base sm:text-lg font-semibold text-brand-primary">
+              แผนผังธาตุกำเนิดของคุณ
+            </h3>
+          </div>
+          <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300">
+            ยังไม่ได้ระบุเดือนเกิด
+          </span>
+        </div>
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0" aria-hidden="true">
+              <span aria-hidden="true" className="material-symbols-outlined text-2xl">calendar_month</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs sm:text-sm text-neutral-700 font-medium leading-relaxed">
+                กรุณาระบุเดือนเกิดเพื่อคำนวณธาตุเจ้าเรือนเกิดและรับคำแนะนำเฉพาะบุคคล
+              </span>
+            </div>
+          </div>
+
+          {onRequestSetBirthMonth && (
+            <button
+              type="button"
+              onClick={onRequestSetBirthMonth}
+              className="min-h-[44px] px-4 py-2 rounded-xl bg-brand-primary hover:bg-brand-hover active:scale-95 text-white text-xs sm:text-sm font-semibold transition-all cursor-pointer shrink-0 flex items-center justify-center gap-1.5 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary self-start sm:self-auto"
+            >
+              <span aria-hidden="true" className="material-symbols-outlined text-base">edit_calendar</span>
+              <span>ระบุเดือนเกิด</span>
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full flex flex-col items-center bg-gradient-to-b from-white via-surface-muted to-brand-surface rounded-2xl p-4 sm:p-5 border border-brand-border-subtle shadow-xs">
       
@@ -96,13 +139,9 @@ export default function ElementRadarSpider({ birthElement, birthMonth, onRequest
           </h3>
         </div>
 
-        <div className={`px-3 py-1 rounded-full text-xs sm:text-sm font-semibold border flex items-center gap-1.5 shadow-xs ${
-          birthElement
-            ? 'bg-emerald-100/90 text-emerald-900 border-emerald-300'
-            : 'bg-amber-100/90 text-amber-900 border-amber-300'
-        }`}>
-          <span className={`w-2 h-2 rounded-full ${birthElement ? 'bg-emerald-600' : 'bg-amber-600'}`}></span>
-          <span>{birthElement ? 'ธาตุเจ้าเรือนเกิด' : 'ยังไม่ได้ระบุเดือนเกิด'}</span>
+        <div className="px-3 py-1 rounded-full text-xs sm:text-sm font-semibold border flex items-center gap-1.5 shadow-xs bg-emerald-100/90 text-emerald-900 border-emerald-300">
+          <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
+          <span>ธาตุเจ้าเรือนเกิด</span>
         </div>
       </div>
 
@@ -291,62 +330,34 @@ export default function ElementRadarSpider({ birthElement, birthMonth, onRequest
         </svg>
       </div>
 
-      {/* ── แถบแสดงธาตุกำเนิดเด่นสง่างาม (ธาตุน้ำ/ธาตุดิน/ธาตุลม/ธาตุไฟ) หรือแจ้งเตือนเมื่อยังไม่ระบุเดือนเกิด ── */}
+      {/* ── แถบแสดงธาตุกำเนิดเด่นสง่างาม (ธาตุน้ำ/ธาตุดิน/ธาตุลม/ธาตุไฟ) ── */}
       <div className="w-full mt-3 pt-3 border-t border-emerald-100">
-        {birthElement ? (
-          <div className="flex flex-col p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200 shadow-2xs">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs sm:text-sm font-bold text-emerald-800">
-                🌱 ธาตุกำเนิดของคุณ {birthMonth ? `(เดือน${birthMonth})` : ''}
+        <div className="flex flex-col p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200 shadow-2xs">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-xs sm:text-sm font-bold text-emerald-800">
+              🌱 ธาตุกำเนิดของคุณ {birthMonth ? `(เดือน${birthMonth})` : ''}
+            </span>
+            <span className="text-xs font-semibold text-emerald-700 bg-white px-2.5 py-0.5 rounded-md border border-emerald-200">
+              ธาตุเจ้าเรือนเกิด
+            </span>
+          </div>
+          <div className="flex items-center gap-3 mt-1">
+            <span className="text-3xl sm:text-4xl">
+              {birthElement === 'ไฟ' ? '🔥' : birthElement === 'ลม' ? '💨' : birthElement === 'ดิน' ? '🌍' : '💧'}
+            </span>
+            <div className="flex flex-col">
+              <span className="text-2xl sm:text-3xl font-bold text-emerald-950 leading-tight">
+                ธาตุ{birthElement}
               </span>
-              <span className="text-xs font-semibold text-emerald-700 bg-white px-2.5 py-0.5 rounded-md border border-emerald-200">
-                ธาตุเจ้าเรือนเกิด
+              <span className="text-xs sm:text-sm font-medium text-emerald-800 mt-0.5 leading-relaxed">
+                {birthElement === 'น้ำ' && 'อาโปธาตุ (สมบูรณ์ ผิวพรรณสดใส เปล่งปลั่ง)'}
+                {birthElement === 'ดิน' && 'ปฐวีธาตุ (โครงสร้างแข็งแรง หนักแน่น มั่นคง)'}
+                {birthElement === 'ลม' && 'วาโยธาตุ (โปร่ง คล่องแคล่ว มีพลังการเคลื่อนไหว)'}
+                {birthElement === 'ไฟ' && 'เตโชธาตุ (อบอุ่น กระตือรือร้น เผาผลาญดี)'}
               </span>
-            </div>
-            <div className="flex items-center gap-3 mt-1">
-              <span className="text-3xl sm:text-4xl">
-                {birthElement === 'ไฟ' ? '🔥' : birthElement === 'ลม' ? '💨' : birthElement === 'ดิน' ? '🌍' : '💧'}
-              </span>
-              <div className="flex flex-col">
-                <span className="text-2xl sm:text-3xl font-bold text-emerald-950 leading-tight">
-                  ธาตุ{birthElement}
-                </span>
-                <span className="text-xs sm:text-sm font-medium text-emerald-800 mt-0.5 leading-relaxed">
-                  {birthElement === 'น้ำ' && 'อาโปธาตุ (สมบูรณ์ ผิวพรรณสดใส เปล่งปลั่ง)'}
-                  {birthElement === 'ดิน' && 'ปฐวีธาตุ (โครงสร้างแข็งแรง หนักแน่น มั่นคง)'}
-                  {birthElement === 'ลม' && 'วาโยธาตุ (โปร่ง คล่องแคล่ว มีพลังการเคลื่อนไหว)'}
-                  {birthElement === 'ไฟ' && 'เตโชธาตุ (อบอุ่น กระตือรือร้น เผาผลาญดี)'}
-                </span>
-              </div>
             </div>
           </div>
-        ) : (
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-amber-50/90 border border-amber-300 shadow-xs">
-            <div className="flex items-start gap-3">
-              <span aria-hidden="true" className="material-symbols-outlined text-amber-700 text-2xl shrink-0 mt-0.5">
-                calendar_month
-              </span>
-              <div className="flex flex-col">
-                <span className="text-sm sm:text-base font-bold text-amber-950">
-                  ยังไม่ได้ระบุเดือนเกิด
-                </span>
-                <span className="text-xs sm:text-sm text-amber-900 font-medium mt-0.5 leading-relaxed">
-                  กรุณาระบุเดือนเกิดเพื่อคำนวณธาตุเจ้าเรือนเกิดและรับคำแนะนำเฉพาะบุคคล
-                </span>
-              </div>
-            </div>
-            {onRequestSetBirthMonth && (
-              <button
-                type="button"
-                onClick={onRequestSetBirthMonth}
-                className="min-h-[44px] px-4 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-hover active:scale-95 text-white text-xs sm:text-sm font-bold transition-all cursor-pointer shrink-0 flex items-center justify-center gap-1.5 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
-              >
-                <span aria-hidden="true" className="material-symbols-outlined text-base">edit_calendar</span>
-                <span>ระบุเดือนเกิด</span>
-              </button>
-            )}
-          </div>
-        )}
+        </div>
       </div>
 
     </div>

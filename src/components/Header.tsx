@@ -38,7 +38,7 @@ export default function Header({ onExit, showExit = false }: HeaderProps) {
               aria-label="ข้อกำหนดและคำชี้แจงทางการแพทย์" 
               aria-haspopup="dialog"
               aria-expanded={isAboutOpen}
-              className="w-10 h-10 sm:w-11 sm:h-11 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full text-text-secondary hover:bg-neutral-100 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+              className="w-11 h-11 sm:w-11 sm:h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-text-secondary hover:bg-neutral-100 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
               onClick={() => setIsAboutOpen(true)}
             >
               <span aria-hidden="true" className="material-symbols-outlined text-[20px] sm:text-[22px]">help_outline</span>
