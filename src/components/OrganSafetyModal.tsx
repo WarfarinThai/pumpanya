@@ -16,12 +16,19 @@ import { FeatureVisualSafety } from './FeatureVisuals';
 interface OrganSafetyModalProps {
   profile: HealthProfile;
   onClose: () => void;
+  initialHerbId?: number | null;
+  onCheckInteraction?: (herb: ThaiHerbalSafetyRecord) => void;
 }
 
 type TabType = 'liver-kidney' | 'duration' | 'maternal' | 'search';
 type SafetyFilter = 'all' | 'liver' | 'kidney' | 'duration' | 'pregnancy' | 'interaction';
 
-export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalProps) {
+export default function OrganSafetyModal({
+  profile,
+  onClose,
+  initialHerbId,
+  onCheckInteraction
+}: OrganSafetyModalProps) {
   const [herbs, setHerbs] = useState<ThaiHerbalSafetyRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -37,19 +44,25 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
       const data = await fetchHerbalSafetyRecords();
       setHerbs(data);
       if (data.length > 0) {
-        const defaultMonograph =
-          data.find(
-            h =>
-              h.english_title?.toLowerCase().includes('andrographis') ||
-              h.definition?.toLowerCase().includes('andrographis paniculata') ||
-              h.monograph_th.includes('ฟ้าทะลายโจร')
-          ) ||
-          data.find(
-            h =>
-              isValidText(h.maximum_continuous_use?.duration) &&
-              isValidText(h.drug_interactions)
-          ) ||
-          data[0];
+        let defaultMonograph: ThaiHerbalSafetyRecord | null = null;
+        if (initialHerbId) {
+          defaultMonograph = data.find(h => h.id === initialHerbId) || null;
+        }
+        if (!defaultMonograph) {
+          defaultMonograph =
+            data.find(
+              h =>
+                h.english_title?.toLowerCase().includes('andrographis') ||
+                h.definition?.toLowerCase().includes('andrographis paniculata') ||
+                h.monograph_th.includes('ฟ้าทะลายโจร')
+            ) ||
+            data.find(
+              h =>
+                isValidText(h.maximum_continuous_use?.duration) &&
+                isValidText(h.drug_interactions)
+            ) ||
+            data[0];
+        }
         setSelectedHerbDetail(prev => (prev && data.some(h => h.id === prev.id) ? prev : defaultMonograph));
       } else {
         setSelectedHerbDetail(null);
@@ -62,11 +75,20 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [initialHerbId]);
 
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  useEffect(() => {
+    if (initialHerbId && herbs.length > 0) {
+      const match = herbs.find(h => h.id === initialHerbId);
+      if (match) {
+        setSelectedHerbDetail(match);
+      }
+    }
+  }, [initialHerbId, herbs]);
 
   // Check user profile for liver/kidney vulnerability
   const hasLiver = Boolean(profile.hasLiverDisease || profile.chronicConditions.some(c => c.includes('ตับ')));
@@ -857,11 +879,41 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                         )}
                       </div>
 
-                      {/* Botanical / Pharmaceutical Definition */}
-                      {selectedHerbDetail.definition && (
-                        <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200/90 text-sm sm:text-[15px] text-neutral-700 leading-relaxed">
-                          <span className="font-bold text-neutral-900">คำจำกัดความและส่วนที่ใช้ทางเภสัชกรรม: </span>
-                          <span>{selectedHerbDetail.definition}</span>
+                      {/* Botanical / Pharmaceutical Definition & Formulation Composition */}
+                      {selectedHerbDetail && (
+                        <div className="p-4 sm:p-5 rounded-2xl bg-neutral-50/90 border border-neutral-200/90 text-sm sm:text-[15px] text-neutral-800 leading-relaxed flex flex-col gap-2.5 shadow-3xs">
+                          <div className="flex items-center justify-between gap-2 flex-wrap border-b border-neutral-200/80 pb-2">
+                            <span className="font-bold text-neutral-900 flex items-center gap-1.5">
+                              <span aria-hidden="true" className="material-symbols-outlined text-base text-brand-primary">
+                                {selectedHerbDetail.monograph_th.startsWith('ยา') ||
+                                selectedHerbDetail.monograph_th.startsWith('พิกัด') ||
+                                selectedHerbDetail.definition?.includes('ประกอบด้วย')
+                                  ? 'format_list_bulleted'
+                                  : 'eco'}
+                              </span>
+                              <span>
+                                {selectedHerbDetail.monograph_th.startsWith('ยา') ||
+                                selectedHerbDetail.monograph_th.startsWith('พิกัด') ||
+                                selectedHerbDetail.definition?.includes('ประกอบด้วย')
+                                  ? 'ส่วนประกอบและตัวยาในตำรับ (Formulation Composition)'
+                                  : 'คำจำกัดความและส่วนที่ใช้ทางเภสัชกรรม (Botanical / Pharmaceutical Part)'}
+                              </span>
+                            </span>
+                            <span className="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-white border border-neutral-200 text-neutral-700">
+                              {selectedHerbDetail.monograph_th.startsWith('ยา') ||
+                              selectedHerbDetail.monograph_th.startsWith('พิกัด') ||
+                              selectedHerbDetail.definition?.includes('ประกอบด้วย')
+                                ? 'ตำรับยาแผนโบราณ'
+                                : 'สมุนไพรเดี่ยว'}
+                            </span>
+                          </div>
+                          <div className="font-medium text-neutral-700 leading-relaxed">
+                            {selectedHerbDetail.definition && selectedHerbDetail.definition !== 'ไม่มีข้อมูล' ? (
+                              <span>{selectedHerbDetail.definition}</span>
+                            ) : (
+                              <span className="text-neutral-500 italic">ไม่มีข้อมูลส่วนประกอบระบุไว้ในเล่มอ้างอิงนี้</span>
+                            )}
+                          </div>
                         </div>
                       )}
 
@@ -1034,6 +1086,22 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                             <p className="text-[15px] font-semibold text-neutral-600 leading-relaxed">
                               ยังไม่มีข้อมูลเพียงพอในฐานข้อมูลที่ระบบตรวจสอบสำหรับสมุนไพรนี้ (ควรปรึกษาแพทย์หรือเภสัชกรก่อนใช้ร่วมกับยาแผนปัจจุบัน)
                             </p>
+                          )}
+                          {onCheckInteraction && (
+                            <div className="pt-2.5 mt-1 border-t border-amber-200/60 flex items-center justify-between gap-3 flex-wrap">
+                              <span className="text-xs text-amber-950 font-semibold">
+                                ตรวจสอบเทียบกับรายการยาประจำตัวที่คุณบันทึกไว้ในระบบ:
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => onCheckInteraction(selectedHerbDetail)}
+                                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-primary hover:bg-brand-hover text-white text-xs sm:text-sm font-bold shadow-xs cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                              >
+                                <span aria-hidden="true" className="material-symbols-outlined text-base">sync_alt</span>
+                                <span>ตรวจสอบยาตีกันสำหรับตำรับนี้</span>
+                                <span aria-hidden="true" className="material-symbols-outlined text-sm">arrow_forward</span>
+                              </button>
+                            </div>
                           )}
                         </div>
 

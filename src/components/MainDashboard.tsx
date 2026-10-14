@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { HealthProfile } from '../types';
 import { getBirthElement } from '../data/elementsAndSafety';
 import OrganSafetyModal from './OrganSafetyModal';
@@ -11,6 +11,10 @@ import ElementRadarSpider from './ElementRadarSpider';
 import SymptomGuidelineModal from './SymptomGuidelineModal';
 import HerbalSubstituteModal from './HerbalSubstituteModal';
 import {
+  fetchHerbalSafetyRecords,
+  ThaiHerbalSafetyRecord
+} from '../services/supabaseHerbalSafety';
+import {
   FeatureVisualBirth,
   FeatureVisualSeason,
   FeatureVisualSafety,
@@ -19,6 +23,17 @@ import {
   FeatureVisualSymptom,
   FeatureVisualSubstitute
 } from './FeatureVisuals';
+
+const POPULAR_PREPARATIONS = [
+  'ฟ้าทะลายโจร',
+  'ขมิ้นชัน',
+  'ยาปราบชมพูทวีป',
+  'ยาตรีผลา',
+  'ยาบำรุงโลหิต',
+  'ยาสหัศธารา',
+  'ยาจันทน์ลีลา',
+  'ยาหอมนวโกฐ'
+];
 
 interface MainDashboardProps {
   profile: HealthProfile;
@@ -40,8 +55,29 @@ export default function MainDashboard({
 }: MainDashboardProps) {
   const [localActiveModal, setLocalActiveModal] = useState<string | null>(null);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [selectedHerbForJourney, setSelectedHerbForJourney] = useState<number | null>(null);
+  const [herbalRecords, setHerbalRecords] = useState<ThaiHerbalSafetyRecord[]>([]);
+  const [prepSearchQuery, setPrepSearchQuery] = useState('');
 
   const activeModal = activeFeature !== undefined ? activeFeature : localActiveModal;
+
+  useEffect(() => {
+    fetchHerbalSafetyRecords()
+      .then(data => setHerbalRecords(data))
+      .catch(err => console.error('Error prefetching herbs in dashboard:', err));
+  }, []);
+
+  const matchingHerbs = useMemo(() => {
+    const q = prepSearchQuery.trim().toLowerCase();
+    if (!q) return [];
+    return herbalRecords
+      .filter(h =>
+        h.monograph_th.toLowerCase().includes(q) ||
+        (h.english_title && h.english_title.toLowerCase().includes(q)) ||
+        (h.definition && h.definition.toLowerCase().includes(q))
+      )
+      .slice(0, 6);
+  }, [herbalRecords, prepSearchQuery]);
 
   const handleOpenModal = (featureId: string) => {
     if (onOpenFeature) {
@@ -57,6 +93,12 @@ export default function MainDashboard({
     } else {
       setLocalActiveModal(null);
     }
+  };
+
+  const handleSelectPreparation = (herb: ThaiHerbalSafetyRecord) => {
+    setSelectedHerbForJourney(herb.id);
+    setPrepSearchQuery('');
+    handleOpenModal('organ-safety');
   };
 
   const birthInfo = getBirthElement(profile.birthMonth);
@@ -202,6 +244,135 @@ export default function MainDashboard({
         </div>
 
       </div>
+
+      {/* ────────────────────────────────────────────────────────── */}
+      {/* 1.5 PREPARATION-FIRST SAFETY JOURNEY QUICK FINDER          */}
+      {/* ────────────────────────────────────────────────────────── */}
+      <section aria-labelledby="prep-journey-heading" className="w-full bg-white rounded-2xl p-4 sm:p-5 shadow-xs border border-border-default flex flex-col gap-3.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-100 pb-2.5">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-10 h-10 rounded-2xl bg-brand-surface text-brand-primary border border-brand-border-subtle flex items-center justify-center shrink-0 shadow-3xs" aria-hidden="true">
+              <span aria-hidden="true" className="material-symbols-outlined text-xl">medication_liquid</span>
+            </div>
+            <div className="flex flex-col min-w-0">
+              <h2 id="prep-journey-heading" className="text-base sm:text-lg font-bold text-brand-primary leading-snug">
+                คัดกรองตำรับยาสมุนไพร (Preparation-First Safety)
+              </h2>
+              <p className="text-xs sm:text-sm text-text-muted font-medium mt-0.5">
+                ค้นหาตำรับยาแผนโบราณหรือสมุนไพรเดี่ยวจาก 294 รายการ เพื่อตรวจส่วนประกอบ ความปลอดภัยตับ/ไต และยาตีกัน
+              </p>
+            </div>
+          </div>
+          <span className="text-xs font-bold text-emerald-900 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200 shrink-0 self-start sm:self-auto">
+            294 ตำรับอ้างอิง
+          </span>
+        </div>
+
+        {/* Search input with live suggestion dropdown */}
+        <div className="relative">
+          <div className="relative flex items-center">
+            <span aria-hidden="true" className="material-symbols-outlined text-neutral-400 absolute left-3.5 text-lg pointer-events-none">
+              search
+            </span>
+            <input
+              type="text"
+              aria-label="ค้นหาตำรับยาสมุนไพร"
+              placeholder="ค้นหาชื่อตำรับหรือสมุนไพร เช่น ฟ้าทะลายโจร, ขมิ้นชัน, ยาปราบชมพูทวีป..."
+              value={prepSearchQuery}
+              onChange={(e) => setPrepSearchQuery(e.target.value)}
+              className="w-full h-11 pl-10 pr-10 bg-surface-muted border border-border-default rounded-xl text-xs sm:text-sm font-semibold text-text-primary placeholder:text-neutral-400 focus-visible:outline-none focus-visible:border-brand-primary focus-visible:ring-2 focus-visible:ring-brand-primary/20 transition-all"
+            />
+            {prepSearchQuery && (
+              <button
+                type="button"
+                onClick={() => setPrepSearchQuery('')}
+                aria-label="ล้างการค้นหา"
+                className="absolute right-1 w-9 h-9 flex items-center justify-center text-neutral-400 hover:text-neutral-700 rounded-lg cursor-pointer"
+              >
+                <span aria-hidden="true" className="material-symbols-outlined text-base">close</span>
+              </button>
+            )}
+          </div>
+
+          {/* Live matches dropdown */}
+          {prepSearchQuery.trim() && (
+            <div className="absolute left-0 right-0 top-full mt-1.5 z-30 bg-white rounded-2xl border border-neutral-200 shadow-lg overflow-hidden flex flex-col divide-y divide-neutral-100 max-h-72 overflow-y-auto">
+              {matchingHerbs.length > 0 ? (
+                matchingHerbs.map((h) => {
+                  const isFormula =
+                    h.monograph_th.startsWith('ยา') ||
+                    h.monograph_th.startsWith('พิกัด') ||
+                    h.definition?.includes('ประกอบด้วย');
+                  return (
+                    <button
+                      key={h.id}
+                      type="button"
+                      onClick={() => handleSelectPreparation(h)}
+                      className="w-full text-left p-3 hover:bg-emerald-50/40 flex items-center justify-between gap-3 transition-colors cursor-pointer group"
+                    >
+                      <div className="flex flex-col min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-sm font-bold text-brand-primary group-hover:text-emerald-950">
+                            🌿 {h.monograph_th}
+                          </span>
+                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-600">
+                            {isFormula ? 'ตำรับยาแผนโบราณ' : 'สมุนไพรเดี่ยว'}
+                          </span>
+                        </div>
+                        {h.english_title && (
+                          <span className="text-xs text-neutral-500 italic truncate mt-0.5">
+                            {h.english_title}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs text-brand-primary font-bold shrink-0">
+                        <span>ตรวจความปลอดภัย</span>
+                        <span aria-hidden="true" className="material-symbols-outlined text-sm">arrow_forward</span>
+                      </div>
+                    </button>
+                  );
+                })
+              ) : (
+                <div className="p-4 text-xs sm:text-sm text-neutral-500 text-center font-medium">
+                  ไม่พบรายการที่ตรงกับคำค้นหา &ldquo;{prepSearchQuery}&rdquo; ใน 294 รายการ
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* High-frequency folk preparations quick chips */}
+        <div className="flex flex-col gap-2 pt-0.5">
+          <span className="text-xs font-semibold text-text-muted flex items-center gap-1">
+            <span aria-hidden="true" className="material-symbols-outlined text-sm text-brand-secondary">stars</span>
+            <span>ตำรับยาและสมุนไพรใช้บ่อย (แตะเพื่อเริ่มตรวจความปลอดภัยทันที):</span>
+          </span>
+          <div className="flex flex-wrap gap-1.5">
+            {POPULAR_PREPARATIONS.map((name) => {
+              const matched = herbalRecords.find(
+                h => h.monograph_th === name || h.monograph_th.includes(name)
+              );
+              return (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => {
+                    if (matched) {
+                      handleSelectPreparation(matched);
+                    } else {
+                      handleOpenModal('organ-safety');
+                    }
+                  }}
+                  className="min-h-[40px] px-3 py-1.5 rounded-xl bg-surface-muted hover:bg-emerald-50 active:bg-emerald-100 border border-border-default hover:border-emerald-300 text-xs sm:text-sm font-bold text-neutral-800 hover:text-brand-primary transition-all cursor-pointer shadow-3xs flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                  <span>{name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       {/* ────────────────────────────────────────────────────────── */}
       {/* 2. FEATURE DIRECTORY: ALL 7 MAJOR TOOLS                    */}
@@ -369,7 +540,15 @@ export default function MainDashboard({
       {/* 3. MODALS RENDERING                                        */}
       {/* ────────────────────────────────────────────────────────── */}
       {activeModal === 'organ-safety' && (
-        <OrganSafetyModal profile={profile} onClose={handleCloseModal} />
+        <OrganSafetyModal
+          profile={profile}
+          initialHerbId={selectedHerbForJourney}
+          onCheckInteraction={(herb) => {
+            setSelectedHerbForJourney(herb.id);
+            handleOpenModal('drug-interaction');
+          }}
+          onClose={handleCloseModal}
+        />
       )}
 
       {activeModal === 'born-vs-current' && (
@@ -385,7 +564,15 @@ export default function MainDashboard({
       )}
 
       {activeModal === 'drug-interaction' && (
-        <DrugInteractionModal profile={profile} onClose={handleCloseModal} />
+        <DrugInteractionModal
+          profile={profile}
+          initialHerbId={selectedHerbForJourney}
+          onViewSafetyMonograph={(herb) => {
+            setSelectedHerbForJourney(herb.id);
+            handleOpenModal('organ-safety');
+          }}
+          onClose={handleCloseModal}
+        />
       )}
 
       {activeModal === 'g2c-registry' && (

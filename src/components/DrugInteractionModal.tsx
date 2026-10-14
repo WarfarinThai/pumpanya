@@ -17,6 +17,8 @@ import { FeatureVisualInteraction } from './FeatureVisuals';
 interface DrugInteractionModalProps {
   profile: HealthProfile;
   onClose: () => void;
+  initialHerbId?: number | null;
+  onViewSafetyMonograph?: (herb: ThaiHerbalSafetyRecord) => void;
 }
 
 type ScopeFilter = 'interactions_only' | 'all';
@@ -107,7 +109,12 @@ function analyzeTasteConflict(tastes: string[]) {
   };
 }
 
-export default function DrugInteractionModal({ profile, onClose }: DrugInteractionModalProps) {
+export default function DrugInteractionModal({
+  profile,
+  onClose,
+  initialHerbId,
+  onViewSafetyMonograph
+}: DrugInteractionModalProps) {
   const [herbs, setHerbs] = useState<ThaiHerbalSafetyRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -121,16 +128,25 @@ export default function DrugInteractionModal({ profile, onClose }: DrugInteracti
     try {
       const data = await fetchHerbalSafetyRecords();
       setHerbs(data);
-      const interesting =
-        data.find(
-          h =>
-            h.english_title?.toLowerCase().includes('andrographis') ||
-            h.definition?.toLowerCase().includes('andrographis paniculata') ||
-            h.monograph_th.includes('ฟ้าทะลายโจร')
-        ) ||
-        data.find(h => isValidText(h.drug_interactions)) ||
-        data[0];
+      let interesting: ThaiHerbalSafetyRecord | null = null;
+      if (initialHerbId) {
+        interesting = data.find(h => h.id === initialHerbId) || null;
+      }
+      if (!interesting) {
+        interesting =
+          data.find(
+            h =>
+              h.english_title?.toLowerCase().includes('andrographis') ||
+              h.definition?.toLowerCase().includes('andrographis paniculata') ||
+              h.monograph_th.includes('ฟ้าทะลายโจร')
+          ) ||
+          data.find(h => isValidText(h.drug_interactions)) ||
+          data[0];
+      }
       setSelectedHerb(interesting || null);
+      if (interesting && !isValidText(interesting.drug_interactions)) {
+        setScopeFilter('all');
+      }
     } catch (err) {
       console.error('Error fetching herbs for interaction:', err);
       setHerbs([]);
@@ -139,11 +155,23 @@ export default function DrugInteractionModal({ profile, onClose }: DrugInteracti
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [initialHerbId]);
 
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  useEffect(() => {
+    if (initialHerbId && herbs.length > 0) {
+      const match = herbs.find(h => h.id === initialHerbId);
+      if (match) {
+        setSelectedHerb(match);
+        if (!isValidText(match.drug_interactions)) {
+          setScopeFilter('all');
+        }
+      }
+    }
+  }, [initialHerbId, herbs]);
 
   // Filter herbs that have documented drug interactions (59 records in the 294 dataset)
   const herbsWithInteractions = useMemo(() => {
@@ -616,6 +644,54 @@ export default function DrugInteractionModal({ profile, onClose }: DrugInteracti
                   </div>
                 </div>
 
+                {/* Formulation Composition & Ingredients */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-neutral-50/90 border border-neutral-200 text-neutral-800 flex flex-col gap-2.5 shadow-3xs">
+                  <div className="flex items-center justify-between gap-2 flex-wrap border-b border-neutral-200/80 pb-2">
+                    <span className="text-xs sm:text-sm font-bold text-neutral-900 flex items-center gap-1.5">
+                      <span aria-hidden="true" className="material-symbols-outlined text-base text-brand-primary">
+                        {selectedHerb.monograph_th.startsWith('ยา') ||
+                        selectedHerb.monograph_th.startsWith('พิกัด') ||
+                        selectedHerb.definition?.includes('ประกอบด้วย')
+                          ? 'format_list_bulleted'
+                          : 'eco'}
+                      </span>
+                      <span>
+                        {selectedHerb.monograph_th.startsWith('ยา') ||
+                        selectedHerb.monograph_th.startsWith('พิกัด') ||
+                        selectedHerb.definition?.includes('ประกอบด้วย')
+                          ? 'ส่วนประกอบและตัวยาในตำรับ (Formulation Composition)'
+                          : 'คำจำกัดความและส่วนที่ใช้ทางเภสัชกรรม (Botanical / Pharmaceutical Part)'}
+                      </span>
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-white border border-neutral-200 text-neutral-700">
+                        {selectedHerb.monograph_th.startsWith('ยา') ||
+                        selectedHerb.monograph_th.startsWith('พิกัด') ||
+                        selectedHerb.definition?.includes('ประกอบด้วย')
+                          ? 'ตำรับยาแผนโบราณ'
+                          : 'สมุนไพรเดี่ยว'}
+                      </span>
+                      {onViewSafetyMonograph && (
+                        <button
+                          type="button"
+                          onClick={() => onViewSafetyMonograph(selectedHerb)}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-brand-primary hover:text-brand-hover underline cursor-pointer"
+                        >
+                          <span>ดูความปลอดภัยตับ/ไต</span>
+                          <span aria-hidden="true" className="material-symbols-outlined text-xs">arrow_forward</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-xs sm:text-sm font-medium text-neutral-700 leading-relaxed">
+                    {selectedHerb.definition && selectedHerb.definition !== 'ไม่มีข้อมูล' ? (
+                      <span>{selectedHerb.definition}</span>
+                    ) : (
+                      <span className="text-neutral-500 italic">ไม่มีข้อมูลส่วนประกอบระบุไว้ในเล่มอ้างอิงนี้</span>
+                    )}
+                  </div>
+                </div>
+
                 {/* 1. Documented Drug Interactions */}
                 <div className="p-4 sm:p-5 rounded-2xl bg-white border border-neutral-200 shadow-2xs flex flex-col gap-2.5">
                   <div className="flex items-center justify-between flex-wrap gap-2">
@@ -735,6 +811,24 @@ export default function DrugInteractionModal({ profile, onClose }: DrugInteracti
                     <span aria-hidden="true" className="material-symbols-outlined text-sm">open_in_new</span>
                   </a>
                 </div>
+
+                {/* Switch back to full Safety Monograph CTA */}
+                {onViewSafetyMonograph && (
+                  <div className="p-4 rounded-2xl bg-brand-surface border border-brand-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-3xs">
+                    <div className="flex items-center gap-2 text-brand-primary font-bold text-xs sm:text-sm">
+                      <span aria-hidden="true" className="material-symbols-outlined text-lg">health_and_safety</span>
+                      <span>ต้องการตรวจสอบข้อมูลความปลอดภัยต่อตับ/ไต หรือระยะเวลาการใช้ยานี้หรือไม่?</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => onViewSafetyMonograph(selectedHerb)}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-primary hover:bg-brand-hover text-white text-xs sm:text-sm font-bold shadow-xs cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary shrink-0"
+                    >
+                      <span>ดูข้อมูลความปลอดภัยและข้อห้ามใช้</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                  </div>
+                )}
 
               </div>
             )}
