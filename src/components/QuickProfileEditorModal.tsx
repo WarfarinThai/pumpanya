@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { HealthProfile, Medication } from '../types';
 import { MONTH_ELEMENT_LIST } from '../data/elementsAndSafety';
-import { STANDARD_DRUG_CATEGORIES, StandardDrugCategory } from '../data/standardDrugCategories';
+import { STANDARD_DRUG_CATEGORIES } from '../data/standardDrugCategories';
 import InfoDialog from './InfoDialog';
 
 interface QuickProfileEditorModalProps {
@@ -12,74 +12,103 @@ interface QuickProfileEditorModalProps {
 
 export default function QuickProfileEditorModal({ profile, onSave, onClose }: QuickProfileEditorModalProps) {
   const [birthMonth, setBirthMonth] = useState<string>(profile.birthMonth || '');
-  const [hasLiver, setHasLiver] = useState(profile.hasLiverDisease || false);
-  const [hasKidney, setHasKidney] = useState(profile.hasKidneyDisease || false);
+  const [hasLiver, setHasLiver] = useState<boolean | undefined>(profile.hasLiverDisease);
+  const [hasKidney, setHasKidney] = useState<boolean | undefined>(profile.hasKidneyDisease);
+  const [isLiverTouched, setIsLiverTouched] = useState<boolean>(false);
+  const [isKidneyTouched, setIsKidneyTouched] = useState<boolean>(false);
 
   // Derive initially selected categories from profile.drugCategoryIds or existing medications
-  const initialCategoryIds = (): string[] => {
-    if (profile.drugCategoryIds && profile.drugCategoryIds.length > 0) {
+  const getInitialCategories = (): string[] | null => {
+    if (Array.isArray(profile.drugCategoryIds)) {
       return [...profile.drugCategoryIds];
     }
     // Backward compatibility: match existing profile.medications to categories
-    const matched = new Set<string>();
-    profile.medications.forEach(m => {
-      const name = m.name.toLowerCase();
-      STANDARD_DRUG_CATEGORIES.forEach(cat => {
-        if (cat.keywords.some(k => name.includes(k.toLowerCase())) ||
-            name.includes(cat.id)) {
-          matched.add(cat.id);
-        }
+    if (profile.medications && profile.medications.length > 0) {
+      const matched = new Set<string>();
+      profile.medications.forEach(m => {
+        const name = m.name.toLowerCase();
+        STANDARD_DRUG_CATEGORIES.forEach(cat => {
+          if (cat.keywords.some(k => name.includes(k.toLowerCase())) ||
+              name.includes(cat.id)) {
+            matched.add(cat.id);
+          }
+        });
       });
-    });
-    return Array.from(matched);
+      return Array.from(matched);
+    }
+    // Unanswered / not yet configured
+    return null;
   };
 
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>(initialCategoryIds());
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[] | null>(getInitialCategories());
+  const [isMedicationsTouched, setIsMedicationsTouched] = useState<boolean>(false);
 
   // Toggle category
   const toggleCategory = (catId: string) => {
+    setIsMedicationsTouched(true);
     setSelectedCategoryIds(prev => {
-      if (prev.includes(catId)) {
-        return prev.filter(id => id !== catId);
+      const current = prev || [];
+      if (current.includes(catId)) {
+        return current.filter(id => id !== catId);
       } else {
-        return [...prev, catId];
+        return [...current, catId];
       }
     });
   };
 
-  // Clear all medications (no routine drugs)
+  // Clear all medications (explicitly no routine drugs)
   const handleSelectNone = () => {
+    setIsMedicationsTouched(true);
     setSelectedCategoryIds([]);
   };
 
+  // Reset medication section to unanswered
+  const handleResetMedications = () => {
+    setIsMedicationsTouched(true);
+    setSelectedCategoryIds(null);
+  };
+
   const handleSave = () => {
-    // Generate standardized medication objects from selected categories
-    const updatedMeds: Medication[] = selectedCategoryIds.map((catId, idx) => {
-      const cat = STANDARD_DRUG_CATEGORIES.find(c => c.id === catId);
-      return {
-        id: String(idx + 1),
-        name: cat ? cat.categoryName : catId,
-        dosage: 'ทานประจำ',
-        frequency: 'ประจำวัน',
-        categoryId: catId,
-        notes: cat ? cat.commonExamples : ''
-      };
-    });
+    const updatedHasLiver = isLiverTouched ? hasLiver : profile.hasLiverDisease;
+    const updatedHasKidney = isKidneyTouched ? hasKidney : profile.hasKidneyDisease;
+
+    let updatedDrugCategoryIds = profile.drugCategoryIds;
+    let updatedMeds = profile.medications;
+
+    if (isMedicationsTouched) {
+      if (selectedCategoryIds === null) {
+        updatedDrugCategoryIds = undefined;
+        updatedMeds = [];
+      } else {
+        updatedDrugCategoryIds = selectedCategoryIds;
+        updatedMeds = selectedCategoryIds.map((catId, idx) => {
+          const cat = STANDARD_DRUG_CATEGORIES.find(c => c.id === catId);
+          return {
+            id: String(idx + 1),
+            name: cat ? cat.categoryName : catId,
+            dosage: 'ทานประจำ',
+            frequency: 'ประจำวัน',
+            categoryId: catId,
+            notes: cat ? cat.commonExamples : ''
+          };
+        });
+      }
+    }
 
     const updated: HealthProfile = {
       ...profile,
       birthMonth: birthMonth ? birthMonth : undefined,
-      hasLiverDisease: hasLiver,
-      hasKidneyDisease: hasKidney,
+      hasLiverDisease: updatedHasLiver,
+      hasKidneyDisease: updatedHasKidney,
       medications: updatedMeds,
-      drugCategoryIds: selectedCategoryIds
+      drugCategoryIds: updatedDrugCategoryIds
     };
 
     onSave(updated);
     onClose();
   };
 
-  const isNoneSelected = selectedCategoryIds.length === 0;
+  const isNoneSelected = selectedCategoryIds !== null && selectedCategoryIds.length === 0;
 
   return (
     <InfoDialog
@@ -136,50 +165,169 @@ export default function QuickProfileEditorModal({ profile, onSave, onClose }: Qu
           </select>
         </div>
 
-        {/* 2. Organ Safety (Liver/Kidney Lock) */}
-        <div className="flex flex-col gap-2 p-3.5 rounded-2xl bg-rose-50/40 border border-rose-200/80">
-          <label className="text-sm sm:text-[15px] font-bold text-rose-950 flex items-center gap-1.5">
-            <span aria-hidden="true" className="material-symbols-outlined text-base text-rose-600">health_and_safety</span>
-            <span>2. ประวัติโรคตับและโรคไต:</span>
-          </label>
+        {/* 2. Organ Safety (Liver/Kidney Status) */}
+        <div className="flex flex-col gap-3 p-3.5 rounded-2xl bg-rose-50/40 border border-rose-200/80">
+          <div className="flex items-center justify-between">
+            <label className="text-sm sm:text-[15px] font-bold text-rose-950 flex items-center gap-1.5">
+              <span aria-hidden="true" className="material-symbols-outlined text-base text-rose-600">health_and_safety</span>
+              <span>2. ประวัติโรคตับและโรคไต:</span>
+            </label>
+            <span className="text-[11px] font-semibold text-rose-800 bg-rose-100/70 px-2 py-0.5 rounded-md">
+              จำเป็นต่อการคัดกรองสมุนไพร
+            </span>
+          </div>
           
-          <div className="flex flex-col gap-2 pt-1">
-            <label className="flex items-center gap-2.5 cursor-pointer select-none text-sm sm:text-[15px] p-2.5 rounded-xl bg-white border border-rose-200/60 hover:bg-rose-50/50 transition-colors leading-relaxed">
-              <input
-                type="checkbox"
-                checked={hasLiver}
-                onChange={(e) => setHasLiver(e.target.checked)}
-                className="w-4 h-4 rounded text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 cursor-pointer shrink-0"
-              />
-              <span className={hasLiver ? 'font-bold text-rose-900' : 'text-neutral-700 font-medium'}>
-                มีประวัติโรคตับ (เช่น ไวรัสตับอักเสบ, ตับแข็ง, ค่าเอนไซม์ตับผิดปกติ)
+          {/* 2.1 Liver question */}
+          <div className="flex flex-col gap-1.5 p-2.5 rounded-xl bg-white border border-rose-200/60">
+            <div className="flex flex-col">
+              <span className="text-xs sm:text-sm font-bold text-neutral-900">
+                ประวัติโรคตับ (เช่น ไวรัสตับอักเสบ, ตับแข็ง, ค่าเอนไซม์ตับผิดปกติ):
               </span>
-            </label>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5 pt-1" role="radiogroup" aria-label="ประวัติโรคตับ">
+              <button
+                type="button"
+                onClick={() => {
+                  setHasLiver(true);
+                  setIsLiverTouched(true);
+                }}
+                className={`py-2 px-1 sm:px-2 rounded-xl text-xs sm:text-sm font-bold text-center border transition-all cursor-pointer ${
+                  hasLiver === true
+                    ? 'bg-rose-600 text-white border-rose-700 shadow-xs ring-2 ring-rose-400/30'
+                    : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border-neutral-200'
+                }`}
+                aria-checked={hasLiver === true}
+                role="radio"
+              >
+                ⚠️ มีประวัติโรค
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setHasLiver(false);
+                  setIsLiverTouched(true);
+                }}
+                className={`py-2 px-1 sm:px-2 rounded-xl text-xs sm:text-sm font-bold text-center border transition-all cursor-pointer ${
+                  hasLiver === false
+                    ? 'bg-emerald-700 text-white border-emerald-800 shadow-xs ring-2 ring-emerald-400/30'
+                    : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border-neutral-200'
+                }`}
+                aria-checked={hasLiver === false}
+                role="radio"
+              >
+                ✓ ไม่มีประวัติ
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setHasLiver(undefined);
+                  setIsLiverTouched(true);
+                }}
+                className={`py-2 px-1 sm:px-2 rounded-xl text-xs sm:text-sm font-bold text-center border transition-all cursor-pointer ${
+                  hasLiver === undefined
+                    ? 'bg-neutral-700 text-white border-neutral-800 shadow-xs ring-2 ring-neutral-400/30'
+                    : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border-neutral-200'
+                }`}
+                aria-checked={hasLiver === undefined}
+                role="radio"
+              >
+                ยังไม่ระบุ
+              </button>
+            </div>
+          </div>
 
-            <label className="flex items-center gap-2.5 cursor-pointer select-none text-sm sm:text-[15px] p-2.5 rounded-xl bg-white border border-rose-200/60 hover:bg-rose-50/50 transition-colors leading-relaxed">
-              <input
-                type="checkbox"
-                checked={hasKidney}
-                onChange={(e) => setHasKidney(e.target.checked)}
-                className="w-4 h-4 rounded text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 cursor-pointer shrink-0"
-              />
-              <span className={hasKidney ? 'font-bold text-rose-900' : 'text-neutral-700 font-medium'}>
-                มีประวัติโรคไต (เช่น ไตวายเรื้อรัง, ค่าการทำงานของไต eGFR ต่ำ)
+          {/* 2.2 Kidney question */}
+          <div className="flex flex-col gap-1.5 p-2.5 rounded-xl bg-white border border-rose-200/60">
+            <div className="flex flex-col">
+              <span className="text-xs sm:text-sm font-bold text-neutral-900">
+                ประวัติโรคไต (เช่น ไตวายเรื้อรัง, ค่าการทำงานของไต eGFR ต่ำ):
               </span>
-            </label>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5 pt-1" role="radiogroup" aria-label="ประวัติโรคไต">
+              <button
+                type="button"
+                onClick={() => {
+                  setHasKidney(true);
+                  setIsKidneyTouched(true);
+                }}
+                className={`py-2 px-1 sm:px-2 rounded-xl text-xs sm:text-sm font-bold text-center border transition-all cursor-pointer ${
+                  hasKidney === true
+                    ? 'bg-rose-600 text-white border-rose-700 shadow-xs ring-2 ring-rose-400/30'
+                    : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border-neutral-200'
+                }`}
+                aria-checked={hasKidney === true}
+                role="radio"
+              >
+                ⚠️ มีประวัติโรค
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setHasKidney(false);
+                  setIsKidneyTouched(true);
+                }}
+                className={`py-2 px-1 sm:px-2 rounded-xl text-xs sm:text-sm font-bold text-center border transition-all cursor-pointer ${
+                  hasKidney === false
+                    ? 'bg-emerald-700 text-white border-emerald-800 shadow-xs ring-2 ring-emerald-400/30'
+                    : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border-neutral-200'
+                }`}
+                aria-checked={hasKidney === false}
+                role="radio"
+              >
+                ✓ ไม่มีประวัติ
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setHasKidney(undefined);
+                  setIsKidneyTouched(true);
+                }}
+                className={`py-2 px-1 sm:px-2 rounded-xl text-xs sm:text-sm font-bold text-center border transition-all cursor-pointer ${
+                  hasKidney === undefined
+                    ? 'bg-neutral-700 text-white border-neutral-800 shadow-xs ring-2 ring-neutral-400/30'
+                    : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border-neutral-200'
+                }`}
+                aria-checked={hasKidney === undefined}
+                role="radio"
+              >
+                ยังไม่ระบุ
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* 3. Standard Drug Categories Selection (No free text, 100% closed choice) */}
+        {/* 3. Standard Drug Categories Selection */}
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
             <label className="text-xs sm:text-sm font-bold text-neutral-900 flex items-center gap-1.5">
               <span aria-hidden="true" className="material-symbols-outlined text-base text-blue-700">medication</span>
               <span>3. กลุ่มยาแผนปัจจุบันที่ท่านรับประทานเป็นประจำ:</span>
             </label>
-            <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">
-              {isNoneSelected ? 'ไม่มียาประจำตัว' : `เลือกแล้ว ${selectedCategoryIds.length} กลุ่ม`}
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className={`text-xs font-bold px-2 py-0.5 rounded-lg border ${
+                selectedCategoryIds === null
+                  ? 'text-neutral-600 bg-neutral-100 border-neutral-300'
+                  : isNoneSelected
+                  ? 'text-emerald-800 bg-emerald-50 border-emerald-200'
+                  : 'text-blue-800 bg-blue-50 border-blue-200'
+              }`}>
+                {selectedCategoryIds === null
+                  ? 'ยังไม่ได้ระบุ'
+                  : isNoneSelected
+                  ? 'ไม่มียาประจำตัว'
+                  : `เลือกแล้ว ${selectedCategoryIds.length} กลุ่ม`}
+              </span>
+              {selectedCategoryIds !== null && (
+                <button
+                  type="button"
+                  onClick={handleResetMedications}
+                  className="text-[11px] text-neutral-500 hover:text-neutral-800 underline font-semibold cursor-pointer"
+                  title="รีเซ็ตเป็นสถานะยังไม่ได้ระบุ"
+                >
+                  รีเซ็ต
+                </button>
+              )}
+            </div>
           </div>
 
           <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
@@ -214,7 +362,7 @@ export default function QuickProfileEditorModal({ profile, onSave, onClose }: Qu
           {/* Category Cards List */}
           <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto pr-1">
             {STANDARD_DRUG_CATEGORIES.map((cat) => {
-              const isSelected = selectedCategoryIds.includes(cat.id);
+              const isSelected = selectedCategoryIds !== null && selectedCategoryIds.includes(cat.id);
               return (
                 <button
                   key={cat.id}
