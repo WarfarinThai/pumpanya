@@ -217,6 +217,16 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
           </div>
         ) : (
           <>
+            {/* ── Database Coverage Scope Notice ── */}
+            <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/90 text-neutral-700 text-xs sm:text-[13px] leading-relaxed flex items-start gap-2">
+              <span aria-hidden="true" className="material-symbols-outlined text-base text-neutral-500 shrink-0 mt-0.5">
+                info
+              </span>
+              <span>
+                ข้อมูลนี้อ้างอิงจากรายการที่มีอยู่ในระบบ และอาจไม่ครอบคลุมสมุนไพร ตำรับพื้นบ้าน หรือสูตรปรุงเฉพาะท้องถิ่นทุกชนิด การไม่พบข้อมูลไม่ได้ยืนยันว่าปลอดภัย
+              </span>
+            </div>
+
             {/* ── Personalized Patient Status Watchdog (สถานะอวัยวะของท่านตามโปรไฟล์) ── */}
             <div className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs ${
               hasLiver || hasKidney 
@@ -252,7 +262,7 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                     {hasLiver || hasKidney 
                       ? `ระบบเปิดโหมดระวังพิเศษ: มีสมุนไพร ${liverContraList.length + kidneyContraList.length} ตัวที่ห้ามใช้เด็ดขาดสำหรับคุณ` 
                       : isOrganExplicitlyNormal
-                      ? 'สามารถใช้สมุนไพรตามขนาดยาและระยะเวลามาตรฐานได้อย่างปลอดภัย'
+                      ? 'ไม่พบประวัติความเสี่ยงโรคตับและไตในโปรไฟล์ กรุณาตรวจสอบข้อห้ามใช้และข้อควรระวังของสมุนไพรแต่ละชนิดด้านล่างก่อนใช้'
                       : 'กรุณาตรวจสอบเกณฑ์ข้อห้ามใช้และข้อควรระวังของสมุนไพรแต่ละชนิดด้านล่าง'}
                   </span>
                 </div>

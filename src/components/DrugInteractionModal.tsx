@@ -272,8 +272,13 @@ export default function DrugInteractionModal({ profile, onClose }: DrugInteracti
   const currentInteractions = selectedHerb ? parseStringOrArray(selectedHerb.drug_interactions) : [];
   const currentTastes = selectedHerb ? parseTasteList(selectedHerb.thai_medicine_taste) : [];
   const tasteAnalysis = useMemo(() => analyzeTasteConflict(currentTastes), [currentTastes]);
-  const hasConfiguredMedications =
-    profile.medications.length > 0 || Array.isArray(profile.drugCategoryIds);
+  const hasUserMedications =
+    profile.medications.length > 0 ||
+    (Array.isArray(profile.drugCategoryIds) && profile.drugCategoryIds.length > 0);
+  const hasExplicitlyNoMedications =
+    Array.isArray(profile.drugCategoryIds) &&
+    profile.drugCategoryIds.length === 0 &&
+    profile.medications.length === 0;
 
   return (
     <InfoDialog
@@ -346,6 +351,16 @@ export default function DrugInteractionModal({ profile, onClose }: DrugInteracti
           </div>
         ) : (
           <>
+            {/* ── Database Coverage Scope Notice ── */}
+            <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/90 text-neutral-700 text-xs sm:text-[13px] leading-relaxed flex items-start gap-2">
+              <span aria-hidden="true" className="material-symbols-outlined text-base text-neutral-500 shrink-0 mt-0.5">
+                info
+              </span>
+              <span>
+                ข้อมูลนี้อ้างอิงจากรายการที่มีอยู่ในระบบ และอาจไม่ครอบคลุมสมุนไพร ตำรับพื้นบ้าน หรือสูตรปรุงเฉพาะท้องถิ่นทุกชนิด การไม่พบข้อมูลไม่ได้ยืนยันว่าปลอดภัย
+              </span>
+            </div>
+
             {/* ── User Active Prescription Scanner Banner ── */}
             <div className="p-4 rounded-2xl bg-surface-brand border border-border-brand-subtle shadow-2xs flex flex-col gap-3">
               <div className="flex items-center justify-between">
@@ -376,10 +391,10 @@ export default function DrugInteractionModal({ profile, onClose }: DrugInteracti
                       )}
                     </div>
                   ))
-                ) : hasConfiguredMedications ? (
+                ) : hasExplicitlyNoMedications ? (
                   <span className="text-xs text-neutral-500 font-medium">✓ ไม่ได้รับประทานยาแผนปัจจุบันเป็นประจำ</span>
                 ) : (
-                  <span className="text-xs text-neutral-500 font-medium">ยังไม่ได้ระบุรายการยาแผนปัจจุบันในโปรไฟล์</span>
+                  <span className="text-xs text-neutral-500 font-medium">ยังไม่ได้ระบุรายการยาแผนปัจจุบัน</span>
                 )}
               </div>
 
@@ -413,19 +428,24 @@ export default function DrugInteractionModal({ profile, onClose }: DrugInteracti
                     ))}
                   </div>
                 </div>
-              ) : hasConfiguredMedications ? (
+              ) : hasUserMedications ? (
                 <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs sm:text-sm text-neutral-700 font-semibold flex items-center gap-2">
                   <span aria-hidden="true" className="material-symbols-outlined text-sm text-neutral-500">info</span>
                   <span>
-                    {profile.medications.length > 0
-                      ? 'ไม่พบรายการยาตีกันในฐานข้อมูลที่ระบบตรวจสอบกับกลุ่มยาที่ท่านระบุ (ควรปรึกษาแพทย์หรือเภสัชกรเพิ่มเติม)'
-                      : 'ไม่ได้รับประทานยาแผนปัจจุบันเป็นประจำ (สามารถเลือกสมุนไพรเพื่อดูข้อมูลยาตีกันและรสยาขัดแย้งด้านล่าง)'}
+                    ไม่พบรายการยาตีกันในฐานข้อมูลที่ระบบตรวจสอบกับกลุ่มยาที่ท่านระบุ (ควรปรึกษาแพทย์หรือเภสัชกรเพิ่มเติม)
+                  </span>
+                </div>
+              ) : hasExplicitlyNoMedications ? (
+                <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs sm:text-sm text-neutral-700 font-semibold flex items-center gap-2">
+                  <span aria-hidden="true" className="material-symbols-outlined text-sm text-neutral-500">info</span>
+                  <span>
+                    ระบุไม่ได้รับประทานยาแผนปัจจุบันเป็นประจำ (สามารถเลือกสมุนไพรเพื่อดูข้อมูลยาตีกันและรสยาขัดแย้งด้านล่าง)
                   </span>
                 </div>
               ) : (
                 <div className="p-2.5 rounded-xl bg-neutral-100 border border-neutral-200 text-xs sm:text-sm text-neutral-700 font-semibold flex items-center gap-2">
                   <span aria-hidden="true" className="material-symbols-outlined text-sm text-neutral-500">info</span>
-                  <span>สามารถเลือกสมุนไพรด้านล่างเพื่อตรวจสอบรายการยาแผนปัจจุบันที่มีรายงานการตีกันและรสยาขัดแย้ง</span>
+                  <span>ยังไม่ได้ระบุรายการยาแผนปัจจุบัน (สามารถเลือกสมุนไพรด้านล่างเพื่อตรวจสอบรายการยาแผนปัจจุบันที่มีรายงานการตีกันและรสยาขัดแย้ง)</span>
                 </div>
               )}
             </div>

@@ -70,8 +70,10 @@ export default function MainDashboard({
     profile.hasLiverDisease === false &&
     profile.hasKidneyDisease === false &&
     !profile.chronicConditions.some(c => c.includes('ตับ') || c.includes('ไต'));
-  const hasConfiguredMedications =
-    profile.medications.length > 0 || Array.isArray(profile.drugCategoryIds);
+  const hasExplicitlyNoMedications =
+    Array.isArray(profile.drugCategoryIds) &&
+    profile.drugCategoryIds.length === 0 &&
+    profile.medications.length === 0;
 
   return (
     <div className="flex flex-col gap-5 pb-6 animate-fade-in">
@@ -169,7 +171,7 @@ export default function MainDashboard({
               <span className="text-xs sm:text-sm text-text-muted font-semibold">
                 {profile.medications.length > 0
                   ? `${profile.medications.length} กลุ่ม`
-                  : hasConfiguredMedications
+                  : hasExplicitlyNoMedications
                   ? 'ไม่มี'
                   : 'ยังไม่ได้ระบุ'}
               </span>
@@ -187,7 +189,7 @@ export default function MainDashboard({
                   </span>
                 ))}
               </div>
-            ) : hasConfiguredMedications ? (
+            ) : hasExplicitlyNoMedications ? (
               <span className="text-xs sm:text-sm text-text-muted italic leading-relaxed">
                 ✓ ไม่ได้รับประทานยาแผนปัจจุบันเป็นประจำ (กดปุ่ม &quot;แก้ไขข้อมูล&quot; ด้านบนเพื่อปรับเปลี่ยน)
               </span>
