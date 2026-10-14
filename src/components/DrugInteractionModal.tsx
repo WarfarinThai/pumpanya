@@ -414,9 +414,13 @@ export default function DrugInteractionModal({ profile, onClose }: DrugInteracti
                   </div>
                 </div>
               ) : hasConfiguredMedications ? (
-                <div className="p-2.5 rounded-xl bg-emerald-50/80 border border-emerald-200 text-xs sm:text-sm text-emerald-900 font-bold flex items-center gap-2">
-                  <span aria-hidden="true" className="material-symbols-outlined text-sm text-emerald-700">check_circle</span>
-                  <span>ไม่พบการตีกันโดยตรงกับยาหลักที่ท่านทานอยู่ (สามารถเลือกสมุนไพรเพื่อดูข้อมูลยาตีกันและรสยาขัดแย้งด้านล่าง)</span>
+                <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs sm:text-sm text-neutral-700 font-semibold flex items-center gap-2">
+                  <span aria-hidden="true" className="material-symbols-outlined text-sm text-neutral-500">info</span>
+                  <span>
+                    {profile.medications.length > 0
+                      ? 'ไม่พบรายการยาตีกันในฐานข้อมูลที่ระบบตรวจสอบกับกลุ่มยาที่ท่านระบุ (ควรปรึกษาแพทย์หรือเภสัชกรเพิ่มเติม)'
+                      : 'ไม่ได้รับประทานยาแผนปัจจุบันเป็นประจำ (สามารถเลือกสมุนไพรเพื่อดูข้อมูลยาตีกันและรสยาขัดแย้งด้านล่าง)'}
+                  </span>
                 </div>
               ) : (
                 <div className="p-2.5 rounded-xl bg-neutral-100 border border-neutral-200 text-xs sm:text-sm text-neutral-700 font-semibold flex items-center gap-2">
@@ -602,9 +606,9 @@ export default function DrugInteractionModal({ profile, onClose }: DrugInteracti
                     <span className={`text-xs font-bold px-2.5 py-0.5 rounded-md border ${
                       currentInteractions.length > 0
                         ? 'text-rose-800 bg-rose-50 border-rose-200'
-                        : 'text-emerald-800 bg-emerald-50 border-emerald-200'
+                        : 'text-neutral-700 bg-neutral-100 border-neutral-200'
                     }`}>
-                      {currentInteractions.length > 0 ? `พบ ${currentInteractions.length} ประเด็นเฝ้าระวัง` : 'ไม่มีรายงานตีกันรุนแรง'}
+                      {currentInteractions.length > 0 ? `พบ ${currentInteractions.length} ประเด็นเฝ้าระวัง` : 'ยังไม่มีข้อมูลในฐานข้อมูล'}
                     </span>
                   </div>
 
@@ -623,7 +627,7 @@ export default function DrugInteractionModal({ profile, onClose }: DrugInteracti
                       ))
                     ) : (
                       <div className="p-4 rounded-xl bg-neutral-50 text-neutral-600 text-sm sm:text-[15px] leading-relaxed font-medium text-center">
-                        ไม่พบรายงานการตีกันกับยาแผนปัจจุบันที่รุนแรงในฐานข้อมูลของ <strong>{selectedHerb.monograph_th}</strong> (อย่างไรก็ตาม ควรรับประทานห่างจากยาแผนปัจจุบันอย่างน้อย 1-2 ชั่วโมง)
+                        ยังไม่มีข้อมูลเพียงพอในฐานข้อมูลที่ระบบตรวจสอบสำหรับ <strong>{selectedHerb.monograph_th}</strong> (การไม่พบข้อมูลไม่ได้แปลว่าไม่มีความเสี่ยงหรือปลอดภัยเสมอไป ควรปรึกษาแพทย์หรือเภสัชกรก่อนใช้ร่วมกับยาแผนปัจจุบัน)
                       </div>
                     )}
                   </div>

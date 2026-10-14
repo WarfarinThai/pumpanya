@@ -66,10 +66,10 @@ export default function MainDashboard({
     profile.hasKidneyDisease ||
     profile.chronicConditions.some(c => c.includes('ตับ') || c.includes('ไต'))
   );
-  const hasConfiguredOrganStatus =
-    typeof profile.hasLiverDisease === 'boolean' ||
-    typeof profile.hasKidneyDisease === 'boolean' ||
-    profile.chronicConditions.length > 0;
+  const isOrganExplicitlyNormal =
+    profile.hasLiverDisease === false &&
+    profile.hasKidneyDisease === false &&
+    !profile.chronicConditions.some(c => c.includes('ตับ') || c.includes('ไต'));
   const hasConfiguredMedications =
     profile.medications.length > 0 || Array.isArray(profile.drugCategoryIds);
 
@@ -147,14 +147,14 @@ export default function MainDashboard({
             <span className={`font-semibold ${
               hasOrganRisk
                 ? 'text-danger-primary'
-                : hasConfiguredOrganStatus
+                : isOrganExplicitlyNormal
                 ? 'text-success-primary'
                 : 'text-text-muted'
             }`}>
               {hasOrganRisk
                 ? '⚠️ มีภาวะโรคตับ/ไต'
-                : hasConfiguredOrganStatus
-                ? '✓ ปกติ (ไม่มีประวัติโรค)'
+                : isOrganExplicitlyNormal
+                ? '✓ ปกติ (ไม่มีประวัติโรคตับ/ไต)'
                 : 'ยังไม่ได้ระบุข้อมูล'}
             </span>
           </div>

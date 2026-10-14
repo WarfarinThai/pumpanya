@@ -133,10 +133,8 @@ export default function SymptomGuidelineModal({ profile, onClose }: SymptomGuide
 
   const hasLiverIssue = Boolean(profile.hasLiverDisease || profile.chronicConditions.some(c => c.includes('ตับ')));
   const hasKidneyIssue = Boolean(profile.hasKidneyDisease || profile.chronicConditions.some(c => c.includes('ไต')));
-  const hasConfiguredOrganStatus =
-    typeof profile.hasLiverDisease === 'boolean' ||
-    typeof profile.hasKidneyDisease === 'boolean' ||
-    profile.chronicConditions.length > 0;
+  const isLiverExplicitlyNormal = profile.hasLiverDisease === false && !profile.chronicConditions.some(c => c.includes('ตับ'));
+  const isKidneyExplicitlyNormal = profile.hasKidneyDisease === false && !profile.chronicConditions.some(c => c.includes('ไต'));
   const isPregnant = profile.isPregnant;
 
   return (
@@ -188,11 +186,11 @@ export default function SymptomGuidelineModal({ profile, onClose }: SymptomGuide
               </span>
             </div>
             <div className="flex items-center gap-2 text-xs">
-              <span className={`px-2.5 py-1 rounded-lg font-bold ${hasLiverIssue ? 'bg-rose-100 text-rose-800' : 'bg-neutral-100 text-neutral-600'}`}>
-                {hasLiverIssue ? '⚠️ เสี่ยงโรคตับ' : hasConfiguredOrganStatus ? 'ตับปกติ' : 'ตับ: ยังไม่ระบุ'}
+              <span className={`px-2.5 py-1 rounded-lg font-bold ${hasLiverIssue ? 'bg-rose-100 text-rose-800' : isLiverExplicitlyNormal ? 'bg-neutral-100 text-neutral-600' : 'bg-neutral-100 text-neutral-500'}`}>
+                {hasLiverIssue ? '⚠️ เสี่ยงโรคตับ' : isLiverExplicitlyNormal ? 'ตับปกติ' : 'ตับ: ยังไม่ระบุ'}
               </span>
-              <span className={`px-2.5 py-1 rounded-lg font-bold ${hasKidneyIssue ? 'bg-rose-100 text-rose-800' : 'bg-neutral-100 text-neutral-600'}`}>
-                {hasKidneyIssue ? '⚠️ เสี่ยงโรคไต' : hasConfiguredOrganStatus ? 'ไตปกติ' : 'ไต: ยังไม่ระบุ'}
+              <span className={`px-2.5 py-1 rounded-lg font-bold ${hasKidneyIssue ? 'bg-rose-100 text-rose-800' : isKidneyExplicitlyNormal ? 'bg-neutral-100 text-neutral-600' : 'bg-neutral-100 text-neutral-500'}`}>
+                {hasKidneyIssue ? '⚠️ เสี่ยงโรคไต' : isKidneyExplicitlyNormal ? 'ไตปกติ' : 'ไต: ยังไม่ระบุ'}
               </span>
             </div>
           </div>

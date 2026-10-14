@@ -228,7 +228,7 @@ export default function SimulationResultView({ result, herb, onReset, onViewSafe
               ))}
               {result.dimensions.interactions.items.length === 0 && (
                 <div className="text-xs text-neutral-500 py-1 pl-2">
-                  ไม่พบปฏิกิริยาอันตรายกับยาที่คุณระบุไว้ในฐานข้อมูลคัดกรอง
+                  ไม่พบรายการยาตีกันในฐานข้อมูลที่ระบบตรวจสอบกับยาที่ระบุ (ควรปรึกษาแพทย์หรือเภสัชกรก่อนใช้ร่วมกัน)
                 </div>
               )}
             </div>

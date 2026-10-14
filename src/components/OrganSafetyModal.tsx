@@ -71,10 +71,10 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
   // Check user profile for liver/kidney vulnerability
   const hasLiver = Boolean(profile.hasLiverDisease || profile.chronicConditions.some(c => c.includes('ตับ')));
   const hasKidney = Boolean(profile.hasKidneyDisease || profile.chronicConditions.some(c => c.includes('ไต')));
-  const hasConfiguredOrganStatus =
-    typeof profile.hasLiverDisease === 'boolean' ||
-    typeof profile.hasKidneyDisease === 'boolean' ||
-    profile.chronicConditions.length > 0;
+  const isOrganExplicitlyNormal =
+    profile.hasLiverDisease === false &&
+    profile.hasKidneyDisease === false &&
+    !profile.chronicConditions.some(c => c.includes('ตับ') || c.includes('ไต'));
 
   // 1. Liver & Kidney specific lists
   const liverContraList = useMemo(() => {
@@ -221,7 +221,7 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
             <div className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs ${
               hasLiver || hasKidney 
                 ? 'bg-rose-50/90 border-rose-200 text-rose-950' 
-                : hasConfiguredOrganStatus
+                : isOrganExplicitlyNormal
                 ? 'bg-emerald-50/70 border-emerald-200 text-emerald-950'
                 : 'bg-neutral-50 border-neutral-200 text-neutral-900'
             }`}>
@@ -229,12 +229,12 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                 <div aria-hidden="true" className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
                   hasLiver || hasKidney
                     ? 'bg-rose-200 text-rose-800'
-                    : hasConfiguredOrganStatus
+                    : isOrganExplicitlyNormal
                     ? 'bg-emerald-200 text-emerald-800'
                     : 'bg-neutral-200 text-neutral-700'
                 }`}>
                   <span aria-hidden="true" className="material-symbols-outlined text-xl">
-                    {hasLiver || hasKidney ? 'warning' : hasConfiguredOrganStatus ? 'verified_user' : 'info'}
+                    {hasLiver || hasKidney ? 'warning' : isOrganExplicitlyNormal ? 'verified_user' : 'info'}
                   </span>
                 </div>
                 <div className="flex flex-col">
@@ -245,13 +245,13 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                     {hasLiver && hasKidney && '⚠️ ตรวจพบประวัติ: ทั้งโรคตับ และ โรคไต'}
                     {hasLiver && !hasKidney && '⚠️ ตรวจพบประวัติ: ภาวะโรคตับ'}
                     {!hasLiver && hasKidney && '⚠️ ตรวจพบประวัติ: ภาวะโรคไต/ไตวาย'}
-                    {!hasLiver && !hasKidney && hasConfiguredOrganStatus && '✓ สุขภาพตับและไตปกติ (ไม่มีประวัติโรคตับ/ไต)'}
-                    {!hasLiver && !hasKidney && !hasConfiguredOrganStatus && 'ยังไม่ได้ระบุประวัติโรคตับและโรคไตในโปรไฟล์'}
+                    {!hasLiver && !hasKidney && isOrganExplicitlyNormal && '✓ สุขภาพตับและไตปกติ (ไม่มีประวัติโรคตับ/ไต)'}
+                    {!hasLiver && !hasKidney && !isOrganExplicitlyNormal && 'ยังไม่ได้ระบุประวัติโรคตับและโรคไตในโปรไฟล์'}
                   </span>
                   <span className="text-sm sm:text-[15px] text-neutral-700 font-medium mt-0.5 leading-relaxed">
                     {hasLiver || hasKidney 
                       ? `ระบบเปิดโหมดระวังพิเศษ: มีสมุนไพร ${liverContraList.length + kidneyContraList.length} ตัวที่ห้ามใช้เด็ดขาดสำหรับคุณ` 
-                      : hasConfiguredOrganStatus
+                      : isOrganExplicitlyNormal
                       ? 'สามารถใช้สมุนไพรตามขนาดยาและระยะเวลามาตรฐานได้อย่างปลอดภัย'
                       : 'กรุณาตรวจสอบเกณฑ์ข้อห้ามใช้และข้อควรระวังของสมุนไพรแต่ละชนิดด้านล่าง'}
                   </span>
@@ -261,9 +261,7 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                 <span className="text-xs font-bold px-3 py-1 rounded-xl bg-white border border-neutral-200 shadow-3xs">
                   {profile.chronicConditions.length > 0
                     ? profile.chronicConditions.join(', ')
-                    : hasConfiguredOrganStatus
-                    ? 'ไม่มีโรคประจำตัวที่ระบุ'
-                    : 'ยังไม่ได้ระบุโรคประจำตัว'}
+                    : 'ไม่มีโรคประจำตัวที่ระบุ'}
                 </span>
               </div>
             </div>
@@ -985,7 +983,7 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                               <span className="font-medium">
                                 {isValidText(selectedHerbDetail.pregnancy?.detail)
                                   ? selectedHerbDetail.pregnancy?.detail
-                                  : 'ไม่มีข้อมูลรายงานความเป็นพิษเด่นชัด แต่ควรปรึกษาแพทย์ก่อนใช้'}
+                                  : 'ยังไม่มีข้อมูลเพียงพอในฐานข้อมูลที่ระบบตรวจสอบ (สตรีมีครรภ์ควรปรึกษาแพทย์ก่อนใช้)'}
                               </span>
                             </div>
                             {isValidText(selectedHerbDetail.lactation?.detail) && (
@@ -1024,7 +1022,7 @@ export default function OrganSafetyModal({ profile, onClose }: OrganSafetyModalP
                             </div>
                           ) : (
                             <p className="text-[15px] font-semibold text-neutral-600 leading-relaxed">
-                              ไม่มีรายงานปฏิกิริยารุนแรงที่ต้องห้ามใช้ร่วมกับยาแผนปัจจุบันเป็นพิเศษ
+                              ยังไม่มีข้อมูลเพียงพอในฐานข้อมูลที่ระบบตรวจสอบสำหรับสมุนไพรนี้ (ควรปรึกษาแพทย์หรือเภสัชกรก่อนใช้ร่วมกับยาแผนปัจจุบัน)
                             </p>
                           )}
                         </div>
