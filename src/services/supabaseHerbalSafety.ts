@@ -171,7 +171,7 @@ export function formatSourcePdfPages(
   if (Array.isArray(pages)) {
     const validNums = pages
       .map(p => (typeof p === 'number' ? p : Number(String(p).trim())))
-      .filter(n => Number.isFinite(n) && Number.isInteger(n) && n > 0);
+      .filter(n => Number.isSafeInteger(n) && n > 0);
     if (validNums.length === 0) return null;
     if (validNums.length === 2) {
       return validNums[0] === validNums[1]
@@ -189,15 +189,32 @@ export function formatSourcePdfPages(
   }
 
   if (typeof pages === 'number') {
-    return Number.isFinite(pages) && Number.isInteger(pages) && pages > 0 ? String(pages) : null;
+    return Number.isSafeInteger(pages) && pages > 0 ? String(pages) : null;
   }
 
   if (typeof pages === 'string') {
     const str = pages.trim();
     if (!isValidText(str)) return null;
-    // Accept numeric page references and ranges only; reject arbitrary text as unverifiable.
+    // Accept only positive integer pages and ascending ranges; reject invalid or ambiguous references.
     const normalized = str.replace(/[–—]/g, '-');
-    return /^\d+(?:\s*-\s*\d+)?(?:\s*,\s*\d+(?:\s*-\s*\d+)?)*$/.test(normalized) ? str : null;
+    if (!/^\d+(?:\s*-\s*\d+)?(?:\s*,\s*\d+(?:\s*-\s*\d+)?)*$/.test(normalized)) {
+      return null;
+    }
+
+    const pageReferences = normalized.split(',');
+    const allValid = pageReferences.every((reference) => {
+      const parts = reference.split('-').map(part => Number(part.trim()));
+      if (parts.length === 1) {
+        return Number.isSafeInteger(parts[0]) && parts[0] > 0;
+      }
+      if (parts.length !== 2) return false;
+
+      const [start, end] = parts;
+      return Number.isSafeInteger(start) && start > 0 &&
+        Number.isSafeInteger(end) && end >= start;
+    });
+
+    return allValid ? str : null;
   }
 
   return null;
