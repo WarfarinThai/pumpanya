@@ -39,6 +39,7 @@ export default function OrganSafetyModal({
   const [safetyFilter, setSafetyFilter] = useState<SafetyFilter>('all');
   const [prepTypeFilter, setPrepTypeFilter] = useState<PrepTypeFilter>('all');
   const [selectedHerbDetail, setSelectedHerbDetail] = useState<ThaiHerbalSafetyRecord | null>(null);
+  const selectedSourcePages = selectedHerbDetail ? formatSourcePdfPages(selectedHerbDetail.source_pdf_pages) : null;
 
   const formulaCount = useMemo(() => {
     return herbs.filter(h => classifyHerbalRecord(h).type === 'formula').length;
@@ -921,12 +922,10 @@ export default function OrganSafetyModal({
                                 สารสนเทศลำดับที่ {selectedHerbDetail.monograph_order}
                               </span>
                             )}
-                            {formatSourcePdfPages(selectedHerbDetail.source_pdf_pages) && (
-                              <span className="text-xs font-bold text-teal-900 bg-teal-50 px-2.5 py-0.5 rounded-lg border border-teal-200 flex items-center gap-1">
-                                <span aria-hidden="true" className="material-symbols-outlined text-xs">description</span>
-                                <span>หน้าเอกสารอ้างอิง: หน้า {formatSourcePdfPages(selectedHerbDetail.source_pdf_pages)}</span>
-                              </span>
-                            )}
+                            <span className={"text-xs font-bold px-2.5 py-0.5 rounded-lg border flex items-center gap-1 " + (selectedSourcePages ? "text-teal-900 bg-teal-50 border-teal-200" : "text-neutral-600 bg-neutral-100 border-neutral-200")}>
+  <span aria-hidden="true" className="material-symbols-outlined text-xs">description</span>
+  <span>{selectedSourcePages ? 'หน้าเอกสารอ้างอิง: หน้า ' + selectedSourcePages : 'ยังไม่มีเลขหน้าที่ตรวจสอบได้ในระเบียนนี้'}</span>
+</span>
                           </div>
                           <h3 className="text-2xl sm:text-3xl font-bold text-brand-primary mt-1.5 leading-tight">
                             {selectedHerbDetail.monograph_th}
@@ -1212,11 +1211,9 @@ export default function OrganSafetyModal({
                             <div>
                               <strong className="text-brand-primary">แหล่งอ้างอิงรายระเบียน:</strong> คณะอนุกรรมการจัดทำตำราอ้างอิงยาสมุนไพรไทย. ตำราอ้างอิงยาสมุนไพรไทย เล่ม 1. กรุงเทพฯ: อมรินทร์พริ้นติ้งแอนด์พับลิชชิ่ง; 2551.
                             </div>
-                            {formatSourcePdfPages(selectedHerbDetail.source_pdf_pages) && (
-                              <div className="font-bold text-emerald-900">
-                                หน้าเอกสารต้นฉบับ: หน้า {formatSourcePdfPages(selectedHerbDetail.source_pdf_pages)}
-                              </div>
-                            )}
+                            <div className={selectedSourcePages ? "font-bold text-emerald-900" : "font-semibold text-neutral-600"}>
+  {selectedSourcePages ? 'หน้าเอกสารต้นฉบับ: หน้า ' + selectedSourcePages : 'ยังไม่มีเลขหน้าที่ตรวจสอบได้ในระเบียนนี้'}
+</div>
                             {formatRecordDate(selectedHerbDetail.created_at) && (
                               <div className="text-[11px] text-neutral-500 font-medium">
                                 บันทึกข้อมูลเมื่อ: {formatRecordDate(selectedHerbDetail.created_at)}
