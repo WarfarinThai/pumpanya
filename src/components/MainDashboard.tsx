@@ -25,7 +25,7 @@ import {
   FeatureVisualSubstitute
 } from './FeatureVisuals';
 
-const POPULAR_PREPARATIONS = [
+const EXAMPLE_PREPARATIONS = [
   'ฟ้าทะลายโจร',
   'ขมิ้นชัน',
   'ยาปราบชมพูทวีป',
@@ -394,14 +394,14 @@ export default function MainDashboard({
           )}
         </div>
 
-        {/* High-frequency folk preparations quick chips */}
+        {/* Example preparation quick chips */}
         <div className="flex flex-col gap-2 pt-0.5">
           <span className="text-xs font-semibold text-text-muted flex items-center gap-1">
             <span aria-hidden="true" className="material-symbols-outlined text-sm text-brand-secondary">stars</span>
-            <span>ตำรับยาและสมุนไพรใช้บ่อย (แตะเพื่อเริ่มตรวจความปลอดภัยทันที):</span>
+            <span>ตัวอย่างตำรับและสมุนไพร (แตะเพื่อเริ่มตรวจความปลอดภัยทันที):</span>
           </span>
           <div className="flex flex-wrap gap-1.5">
-            {POPULAR_PREPARATIONS.map((name) => {
+            {EXAMPLE_PREPARATIONS.map((name) => {
               const matched = herbalRecords.find(
                 h => h.monograph_th === name || h.monograph_th.includes(name)
               );

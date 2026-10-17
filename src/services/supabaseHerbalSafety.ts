@@ -171,7 +171,7 @@ export function formatSourcePdfPages(
   if (Array.isArray(pages)) {
     const validNums = pages
       .map(p => (typeof p === 'number' ? p : Number(String(p).trim())))
-      .filter(n => !Number.isNaN(n) && n > 0);
+      .filter(n => Number.isFinite(n) && Number.isInteger(n) && n > 0);
     if (validNums.length === 0) return null;
     if (validNums.length === 2) {
       return validNums[0] === validNums[1]
@@ -185,16 +185,19 @@ export function formatSourcePdfPages(
     const raw = pages.page;
     if (raw === null || raw === undefined) return null;
     const str = String(raw).trim();
-    return isValidText(str) ? str : null;
+    return formatSourcePdfPages(str);
   }
 
   if (typeof pages === 'number') {
-    return pages > 0 ? String(pages) : null;
+    return Number.isFinite(pages) && Number.isInteger(pages) && pages > 0 ? String(pages) : null;
   }
 
   if (typeof pages === 'string') {
     const str = pages.trim();
-    return isValidText(str) ? str : null;
+    if (!isValidText(str)) return null;
+    // Accept numeric page references and ranges only; reject arbitrary text as unverifiable.
+    const normalized = str.replace(/[–—]/g, '-');
+    return /^\d+(?:\s*-\s*\d+)?(?:\s*,\s*\d+(?:\s*-\s*\d+)?)*$/.test(normalized) ? str : null;
   }
 
   return null;

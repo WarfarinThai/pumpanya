@@ -121,6 +121,7 @@ export default function DrugInteractionModal({
   const [error, setError] = useState<string | null>(null);
   const [scopeFilter, setScopeFilter] = useState<ScopeFilter>('interactions_only');
   const [selectedHerb, setSelectedHerb] = useState<ThaiHerbalSafetyRecord | null>(null);
+  const selectedSourcePages = selectedHerb ? formatSourcePdfPages(selectedHerb.source_pdf_pages) : null;
   const [herbSearch, setHerbSearch] = useState<string>('');
 
   const loadData = useCallback(async () => {
@@ -174,7 +175,7 @@ export default function DrugInteractionModal({
     }
   }, [initialHerbId, herbs]);
 
-  // Filter herbs that have documented drug interactions (59 records in the 294 dataset)
+  // Filter herbs that have documented drug interactions
   const herbsWithInteractions = useMemo(() => {
     return herbs.filter(h => isValidText(h.drug_interactions));
   }, [herbs]);
@@ -479,7 +480,7 @@ export default function DrugInteractionModal({
               )}
             </div>
 
-            {/* ── Interactive Herb Selector & Quick Chips (294 Records) ── */}
+            {/* ── Interactive Herb Selector & Quick Chips ── */}
             <div className="flex flex-col gap-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <label className="text-sm font-bold text-brand-primary flex items-center gap-2">
@@ -612,12 +613,10 @@ export default function DrugInteractionModal({
                         </span>
                         ลำดับที่ #{selectedHerb.display_index || selectedHerb.id} จาก {herbs.length} รายการ
                       </span>
-                      {formatSourcePdfPages(selectedHerb.source_pdf_pages) && (
-                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-white/15 text-emerald-200 border border-white/20 flex items-center gap-1">
-                          <span aria-hidden="true" className="material-symbols-outlined text-xs">description</span>
-                          <span>หน้าเอกสารอ้างอิง: หน้า {formatSourcePdfPages(selectedHerb.source_pdf_pages)}</span>
-                        </span>
-                      )}
+                      <span className={"px-2.5 py-1 rounded-full text-xs font-bold border flex items-center gap-1 " + (selectedSourcePages ? "bg-white/15 text-emerald-200 border-white/20" : "bg-white/10 text-neutral-200 border-white/20")}>
+  <span aria-hidden="true" className="material-symbols-outlined text-xs">description</span>
+  <span>{selectedSourcePages ? 'หน้าเอกสารอ้างอิง: หน้า ' + selectedSourcePages : 'ยังไม่มีเลขหน้าที่ตรวจสอบได้ในระเบียนนี้'}</span>
+</span>
                     </div>
                     {selectedHerb.english_title && (
                       <span className="text-xs text-neutral-200 font-medium">
@@ -756,7 +755,7 @@ export default function DrugInteractionModal({
                     <strong>เหตุผลทางเภสัชกรรมแผนไทย:</strong> {tasteAnalysis.conflictReason}
                   </p>
 
-                  {/* Quick clickable examples of conflicting herbs in the 294 DB */}
+                  {/* Quick clickable examples of conflicting herbs in the dataset */}
                   <div className="flex flex-wrap items-center gap-1.5 pt-1">
                     <span className="text-xs font-bold text-amber-900">ตัวอย่างสมุนไพรที่รสยาขัดแย้งกัน:</span>
                     {tasteAnalysis.conflictingExamples.map(exName => {
@@ -783,11 +782,9 @@ export default function DrugInteractionModal({
                       <div>
                         <strong className="text-brand-primary">แหล่งอ้างอิงรายระเบียน:</strong> คณะอนุกรรมการจัดทำตำราอ้างอิงยาสมุนไพรไทย. ตำราอ้างอิงยาสมุนไพรไทย เล่ม 1. กรุงเทพฯ: อมรินทร์พริ้นติ้งแอนด์พับลิชชิ่ง; 2551.
                       </div>
-                      {formatSourcePdfPages(selectedHerb.source_pdf_pages) && (
-                        <div className="font-bold text-emerald-900">
-                          หน้าเอกสารต้นฉบับ: หน้า {formatSourcePdfPages(selectedHerb.source_pdf_pages)}
-                        </div>
-                      )}
+                      <div className={selectedSourcePages ? "font-bold text-emerald-900" : "font-semibold text-neutral-600"}>
+  {selectedSourcePages ? 'หน้าเอกสารต้นฉบับ: หน้า ' + selectedSourcePages : 'ยังไม่มีเลขหน้าที่ตรวจสอบได้ในระเบียนนี้'}
+</div>
                       {formatRecordDate(selectedHerb.created_at) && (
                         <div className="text-[11px] text-neutral-500 font-medium">
                           บันทึกข้อมูลเมื่อ: {formatRecordDate(selectedHerb.created_at)}
