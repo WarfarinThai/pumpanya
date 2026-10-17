@@ -7,7 +7,8 @@ import {
   parseStringOrArray,
   parseTasteList,
   formatSourcePdfPages,
-  formatRecordDate
+  formatRecordDate,
+  classifyHerbalRecord
 } from '../services/supabaseHerbalSafety';
 import ErrorState from './ErrorState';
 import InfoDialog from './InfoDialog';
@@ -22,6 +23,7 @@ interface OrganSafetyModalProps {
 
 type TabType = 'liver-kidney' | 'duration' | 'maternal' | 'search';
 type SafetyFilter = 'all' | 'liver' | 'kidney' | 'duration' | 'pregnancy' | 'interaction';
+type PrepTypeFilter = 'all' | 'formula' | 'single';
 
 export default function OrganSafetyModal({
   profile,
@@ -32,10 +34,19 @@ export default function OrganSafetyModal({
   const [herbs, setHerbs] = useState<ThaiHerbalSafetyRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<TabType>('liver-kidney');
+  const [activeTab, setActiveTab] = useState<TabType>(initialHerbId ? 'search' : 'liver-kidney');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [safetyFilter, setSafetyFilter] = useState<SafetyFilter>('all');
+  const [prepTypeFilter, setPrepTypeFilter] = useState<PrepTypeFilter>('all');
   const [selectedHerbDetail, setSelectedHerbDetail] = useState<ThaiHerbalSafetyRecord | null>(null);
+
+  const formulaCount = useMemo(() => {
+    return herbs.filter(h => classifyHerbalRecord(h).type === 'formula').length;
+  }, [herbs]);
+
+  const singleCount = useMemo(() => {
+    return herbs.filter(h => classifyHerbalRecord(h).type === 'single').length;
+  }, [herbs]);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -86,6 +97,7 @@ export default function OrganSafetyModal({
       const match = herbs.find(h => h.id === initialHerbId);
       if (match) {
         setSelectedHerbDetail(match);
+        setActiveTab('search');
       }
     }
   }, [initialHerbId, herbs]);
@@ -131,9 +143,16 @@ export default function OrganSafetyModal({
     );
   }, [herbs]);
 
-  // 4. Comprehensive Search & Category Filter
+  // 4. Comprehensive Search & Preparation-Type / Safety Filter
   const filteredSearchList = useMemo(() => {
     let list = herbs;
+
+    // Apply preparation-type filter (All includes formula, single, and unclassified)
+    if (prepTypeFilter === 'formula') {
+      list = list.filter(h => classifyHerbalRecord(h).type === 'formula');
+    } else if (prepTypeFilter === 'single') {
+      list = list.filter(h => classifyHerbalRecord(h).type === 'single');
+    }
 
     // Apply safety filter tag
     if (safetyFilter === 'liver') {
@@ -161,7 +180,7 @@ export default function OrganSafetyModal({
         tastes.some(t => t.toLowerCase().includes(q))
       );
     });
-  }, [herbs, searchQuery, safetyFilter]);
+  }, [herbs, prepTypeFilter, safetyFilter, searchQuery]);
 
   // Auto-sync selected item if current selection not in filtered list
   useEffect(() => {
@@ -645,6 +664,58 @@ export default function OrganSafetyModal({
                 {/* 2. Interactive Search & Category Quick Filter Controls */}
                 <div className="flex flex-col gap-3">
                   
+                  {/* Preparation-Type Quick Filter (F3 + F6: ทั้งหมด / ตำรับ / สมุนไพรเดี่ยว) */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
+                    <span className="text-xs font-bold text-neutral-600 whitespace-nowrap mr-1 flex items-center gap-1">
+                      <span aria-hidden="true" className="material-symbols-outlined text-sm text-brand-primary">filter_alt</span>
+                      <span>ประเภทรายการ:</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setPrepTypeFilter('all')}
+                      className={`px-3 py-1.5 rounded-xl font-bold whitespace-nowrap transition-all cursor-pointer border ${
+                        prepTypeFilter === 'all'
+                          ? 'bg-brand-primary text-white border-brand-primary shadow-xs'
+                          : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-50'
+                      }`}
+                    >
+                      ทั้งหมด ({herbs.length})
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPrepTypeFilter('formula')}
+                      className={`px-3 py-1.5 rounded-xl font-bold whitespace-nowrap transition-all cursor-pointer border flex items-center gap-1 ${
+                        prepTypeFilter === 'formula'
+                          ? 'bg-emerald-800 text-white border-emerald-800 shadow-xs'
+                          : 'bg-white text-emerald-900 border-emerald-200 hover:bg-emerald-50'
+                      }`}
+                    >
+                      <span aria-hidden="true" className="material-symbols-outlined text-base">format_list_bulleted</span>
+                      <span>ตำรับ ({formulaCount})</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPrepTypeFilter('single')}
+                      className={`px-3 py-1.5 rounded-xl font-bold whitespace-nowrap transition-all cursor-pointer border flex items-center gap-1 ${
+                        prepTypeFilter === 'single'
+                          ? 'bg-emerald-800 text-white border-emerald-800 shadow-xs'
+                          : 'bg-white text-emerald-900 border-emerald-200 hover:bg-emerald-50'
+                      }`}
+                    >
+                      <span aria-hidden="true" className="material-symbols-outlined text-base">eco</span>
+                      <span>สมุนไพรเดี่ยว ({singleCount})</span>
+                    </button>
+                    {prepTypeFilter !== 'all' && (
+                      <button
+                        type="button"
+                        onClick={() => setPrepTypeFilter('all')}
+                        className="text-xs font-bold text-neutral-500 hover:text-neutral-800 hover:underline cursor-pointer ml-1"
+                      >
+                        (ล้างตัวกรองประเภท)
+                      </button>
+                    )}
+                  </div>
+
                   {/* Safety Quick Filters (Filter Chips) */}
                   <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
                     <span className="text-xs font-bold text-neutral-500 whitespace-nowrap mr-1">
@@ -785,17 +856,20 @@ export default function OrganSafetyModal({
 
                   {/* Summary & Filter Status Bar */}
                   <div className="flex items-center justify-between text-xs text-neutral-600 px-1">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className="font-semibold">
                         แสดงข้อมูลจากตัวกรอง: <strong className="text-emerald-900">{filteredSearchList.length}</strong> จากทั้งหมด {herbs.length} รายการ
                       </span>
-                      {safetyFilter !== 'all' && (
+                      {(prepTypeFilter !== 'all' || safetyFilter !== 'all') && (
                         <button
                           type="button"
-                          onClick={() => setSafetyFilter('all')}
+                          onClick={() => {
+                            setPrepTypeFilter('all');
+                            setSafetyFilter('all');
+                          }}
                           className="text-xs font-bold text-rose-600 hover:underline cursor-pointer ml-1"
                         >
-                          (ล้างตัวกรองหมวด)
+                          (ล้างตัวกรองทั้งหมด)
                         </button>
                       )}
                     </div>
@@ -880,42 +954,33 @@ export default function OrganSafetyModal({
                       </div>
 
                       {/* Botanical / Pharmaceutical Definition & Formulation Composition */}
-                      {selectedHerbDetail && (
-                        <div className="p-4 sm:p-5 rounded-2xl bg-neutral-50/90 border border-neutral-200/90 text-sm sm:text-[15px] text-neutral-800 leading-relaxed flex flex-col gap-2.5 shadow-3xs">
-                          <div className="flex items-center justify-between gap-2 flex-wrap border-b border-neutral-200/80 pb-2">
-                            <span className="font-bold text-neutral-900 flex items-center gap-1.5">
-                              <span aria-hidden="true" className="material-symbols-outlined text-base text-brand-primary">
-                                {selectedHerbDetail.monograph_th.startsWith('ยา') ||
-                                selectedHerbDetail.monograph_th.startsWith('พิกัด') ||
-                                selectedHerbDetail.definition?.includes('ประกอบด้วย')
-                                  ? 'format_list_bulleted'
-                                  : 'eco'}
+                      {selectedHerbDetail && (() => {
+                        const classification = classifyHerbalRecord(selectedHerbDetail);
+                        return (
+                          <div className="p-4 sm:p-5 rounded-2xl bg-neutral-50/90 border border-neutral-200/90 text-sm sm:text-[15px] text-neutral-800 leading-relaxed flex flex-col gap-2.5 shadow-3xs">
+                            <div className="flex items-center justify-between gap-2 flex-wrap border-b border-neutral-200/80 pb-2">
+                              <span className="font-bold text-neutral-900 flex items-center gap-1.5">
+                                <span aria-hidden="true" className="material-symbols-outlined text-base text-brand-primary">
+                                  {classification.icon}
+                                </span>
+                                <span>
+                                  {classification.sectionTitle}
+                                </span>
                               </span>
-                              <span>
-                                {selectedHerbDetail.monograph_th.startsWith('ยา') ||
-                                selectedHerbDetail.monograph_th.startsWith('พิกัด') ||
-                                selectedHerbDetail.definition?.includes('ประกอบด้วย')
-                                  ? 'ส่วนประกอบและตัวยาในตำรับ (Formulation Composition)'
-                                  : 'คำจำกัดความและส่วนที่ใช้ทางเภสัชกรรม (Botanical / Pharmaceutical Part)'}
+                              <span className={`text-xs font-bold px-2.5 py-0.5 rounded-lg border ${classification.badgeClass}`}>
+                                {classification.label}
                               </span>
-                            </span>
-                            <span className="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-white border border-neutral-200 text-neutral-700">
-                              {selectedHerbDetail.monograph_th.startsWith('ยา') ||
-                              selectedHerbDetail.monograph_th.startsWith('พิกัด') ||
-                              selectedHerbDetail.definition?.includes('ประกอบด้วย')
-                                ? 'ตำรับยาแผนโบราณ'
-                                : 'สมุนไพรเดี่ยว'}
-                            </span>
+                            </div>
+                            <div className="font-medium text-neutral-700 leading-relaxed">
+                              {selectedHerbDetail.definition && selectedHerbDetail.definition !== 'ไม่มีข้อมูล' ? (
+                                <span>{selectedHerbDetail.definition}</span>
+                              ) : (
+                                <span className="text-neutral-500 italic">{classification.emptyDefinitionText}</span>
+                              )}
+                            </div>
                           </div>
-                          <div className="font-medium text-neutral-700 leading-relaxed">
-                            {selectedHerbDetail.definition && selectedHerbDetail.definition !== 'ไม่มีข้อมูล' ? (
-                              <span>{selectedHerbDetail.definition}</span>
-                            ) : (
-                              <span className="text-neutral-500 italic">ไม่มีข้อมูลส่วนประกอบระบุไว้ในเล่มอ้างอิงนี้</span>
-                            )}
-                          </div>
-                        </div>
-                      )}
+                        );
+                      })()}
 
                       {/* Monograph Safety Deep-Dive Grid */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[15px] leading-relaxed">

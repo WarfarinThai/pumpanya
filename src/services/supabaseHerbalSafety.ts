@@ -234,3 +234,5 @@ export async function fetchHerbalSafetyRecords(): Promise<ThaiHerbalSafetyRecord
     throw err;
   }
 }
+
+export { classifyHerbalRecord, type HerbalClassification, type HerbalRecordType } from './herbalClassifier';

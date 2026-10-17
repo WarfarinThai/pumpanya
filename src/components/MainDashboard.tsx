@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { HealthProfile } from '../types';
 import { getBirthElement } from '../data/elementsAndSafety';
 import OrganSafetyModal from './OrganSafetyModal';
@@ -12,7 +12,8 @@ import SymptomGuidelineModal from './SymptomGuidelineModal';
 import HerbalSubstituteModal from './HerbalSubstituteModal';
 import {
   fetchHerbalSafetyRecords,
-  ThaiHerbalSafetyRecord
+  ThaiHerbalSafetyRecord,
+  classifyHerbalRecord
 } from '../services/supabaseHerbalSafety';
 import {
   FeatureVisualBirth,
@@ -57,15 +58,30 @@ export default function MainDashboard({
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [selectedHerbForJourney, setSelectedHerbForJourney] = useState<number | null>(null);
   const [herbalRecords, setHerbalRecords] = useState<ThaiHerbalSafetyRecord[]>([]);
+  const [isLoadingHerbs, setIsLoadingHerbs] = useState<boolean>(true);
+  const [herbsLoadError, setHerbsLoadError] = useState<string | null>(null);
   const [prepSearchQuery, setPrepSearchQuery] = useState('');
 
   const activeModal = activeFeature !== undefined ? activeFeature : localActiveModal;
 
-  useEffect(() => {
+  const loadDashboardHerbs = useCallback(() => {
+    setIsLoadingHerbs(true);
+    setHerbsLoadError(null);
     fetchHerbalSafetyRecords()
-      .then(data => setHerbalRecords(data))
-      .catch(err => console.error('Error prefetching herbs in dashboard:', err));
+      .then(data => {
+        setHerbalRecords(data);
+        setIsLoadingHerbs(false);
+      })
+      .catch(err => {
+        console.error('Error prefetching herbs in dashboard:', err);
+        setHerbsLoadError('ไม่สามารถเชื่อมต่อฐานข้อมูลตำรับยาได้');
+        setIsLoadingHerbs(false);
+      });
   }, []);
+
+  useEffect(() => {
+    loadDashboardHerbs();
+  }, [loadDashboardHerbs]);
 
   const matchingHerbs = useMemo(() => {
     const q = prepSearchQuery.trim().toLowerCase();
@@ -259,13 +275,33 @@ export default function MainDashboard({
                 คัดกรองตำรับยาสมุนไพร (Preparation-First Safety)
               </h2>
               <p className="text-xs sm:text-sm text-text-muted font-medium mt-0.5">
-                ค้นหาตำรับยาแผนโบราณหรือสมุนไพรเดี่ยวจาก 294 รายการ เพื่อตรวจส่วนประกอบ ความปลอดภัยตับ/ไต และยาตีกัน
+                {isLoadingHerbs
+                  ? 'ค้นหาตำรับยาแผนโบราณหรือสมุนไพรเดี่ยว เพื่อตรวจส่วนประกอบ ความปลอดภัยตับ/ไต และยาตีกัน'
+                  : herbsLoadError
+                  ? 'ค้นหาตำรับยาแผนโบราณหรือสมุนไพรเดี่ยว เพื่อตรวจส่วนประกอบ ความปลอดภัยตับ/ไต และยาตีกัน'
+                  : `ค้นหาตำรับยาแผนโบราณหรือสมุนไพรเดี่ยวจาก ${herbalRecords.length} รายการ เพื่อตรวจส่วนประกอบ ความปลอดภัยตับ/ไต และยาตีกัน`}
               </p>
             </div>
           </div>
-          <span className="text-xs font-bold text-emerald-900 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200 shrink-0 self-start sm:self-auto">
-            294 ตำรับอ้างอิง
-          </span>
+          {isLoadingHerbs ? (
+            <span className="text-xs font-bold text-neutral-600 bg-neutral-100 px-2.5 py-1 rounded-xl border border-neutral-200 shrink-0 self-start sm:self-auto flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 border-2 border-emerald-700 border-t-transparent rounded-full animate-spin"></span>
+              <span>กำลังโหลดตำรับ...</span>
+            </span>
+          ) : herbsLoadError ? (
+            <button
+              type="button"
+              onClick={loadDashboardHerbs}
+              className="text-xs font-bold text-rose-800 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded-xl border border-rose-200 shrink-0 self-start sm:self-auto cursor-pointer flex items-center gap-1"
+            >
+              <span aria-hidden="true" className="material-symbols-outlined text-xs">refresh</span>
+              <span>ลองโหลดใหม่</span>
+            </button>
+          ) : (
+            <span className="text-xs font-bold text-emerald-900 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200 shrink-0 self-start sm:self-auto">
+              {herbalRecords.length} ตำรับอ้างอิง
+            </span>
+          )}
         </div>
 
         {/* Search input with live suggestion dropdown */}
@@ -297,12 +333,29 @@ export default function MainDashboard({
           {/* Live matches dropdown */}
           {prepSearchQuery.trim() && (
             <div className="absolute left-0 right-0 top-full mt-1.5 z-30 bg-white rounded-2xl border border-neutral-200 shadow-lg overflow-hidden flex flex-col divide-y divide-neutral-100 max-h-72 overflow-y-auto">
-              {matchingHerbs.length > 0 ? (
+              {isLoadingHerbs ? (
+                <div className="p-4 text-xs sm:text-sm text-neutral-500 text-center font-medium flex items-center justify-center gap-2">
+                  <span className="w-4 h-4 border-2 border-brand-primary border-t-transparent rounded-full animate-spin"></span>
+                  <span>กำลังค้นหาในฐานข้อมูลตำรับยา...</span>
+                </div>
+              ) : herbsLoadError ? (
+                <div className="p-4 text-xs sm:text-sm text-rose-700 text-center font-medium flex flex-col items-center gap-2">
+                  <span>ไม่สามารถเชื่อมต่อฐานข้อมูลตำรับยาได้</span>
+                  <button
+                    type="button"
+                    onClick={loadDashboardHerbs}
+                    className="px-3 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-800 text-xs font-bold cursor-pointer"
+                  >
+                    ลองใหม่อีกครั้ง
+                  </button>
+                </div>
+              ) : herbalRecords.length === 0 ? (
+                <div className="p-4 text-xs sm:text-sm text-neutral-500 text-center font-medium">
+                  ไม่พบข้อมูลตำรับยาในฐานข้อมูล
+                </div>
+              ) : matchingHerbs.length > 0 ? (
                 matchingHerbs.map((h) => {
-                  const isFormula =
-                    h.monograph_th.startsWith('ยา') ||
-                    h.monograph_th.startsWith('พิกัด') ||
-                    h.definition?.includes('ประกอบด้วย');
+                  const classification = classifyHerbalRecord(h);
                   return (
                     <button
                       key={h.id}
@@ -315,8 +368,8 @@ export default function MainDashboard({
                           <span className="text-sm font-bold text-brand-primary group-hover:text-emerald-950">
                             🌿 {h.monograph_th}
                           </span>
-                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-600">
-                            {isFormula ? 'ตำรับยาแผนโบราณ' : 'สมุนไพรเดี่ยว'}
+                          <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-md border ${classification.badgeClass}`}>
+                            {classification.label}
                           </span>
                         </div>
                         {h.english_title && (
@@ -334,7 +387,7 @@ export default function MainDashboard({
                 })
               ) : (
                 <div className="p-4 text-xs sm:text-sm text-neutral-500 text-center font-medium">
-                  ไม่พบรายการที่ตรงกับคำค้นหา &ldquo;{prepSearchQuery}&rdquo; ใน 294 รายการ
+                  ไม่พบรายการที่ตรงกับคำค้นหา &ldquo;{prepSearchQuery}&rdquo; จาก {herbalRecords.length} รายการ
                 </div>
               )}
             </div>
