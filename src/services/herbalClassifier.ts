@@ -56,7 +56,7 @@ export function classifyHerbalRecord(record: ThaiHerbalSafetyRecord): HerbalClas
   }
 
   // 2. Check for single-herb evidence (must have positive botanical taxon / part evidence)
-  const hasBotanicalFamily = /วงศ์\s*[ก-๛A-Za-z]{2,}/.test(def);
+  const hasBotanicalFamily = /วงศ์\s*[:：]?\s*[A-Z][A-Za-z-]*aceae\b/.test(def);
   const hasBotanicalBinomial = /\b[A-Z][a-z]{2,}\s+[a-z][a-z-]{2,}\b/.test(def);
   const hasExplicitPlantPart =
     /(?:ผล|ดอก|ใบ|ราก|เปลือก|เหง้า|หัว|ต้น|เนื้อไม้|แก่น|ยาง|เมล็ด|ทั้งต้น|ส่วนเหนือดิน|น้ำยาง|เถา|กิ่ง)(?=(?:ของ|จาก|ที่ใช้|ที่นำมาใช้|สด|แห้ง|ซึ่ง|เป็น|ใน|\s|$))/.test(def);
