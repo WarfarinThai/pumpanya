@@ -32,8 +32,10 @@ export function classifyHerbalRecord(record: ThaiHerbalSafetyRecord): HerbalClas
   const def = (record.definition || '').trim();
 
   // 1. Check for formula evidence
+  // A name beginning with 'ยาง...' may describe a botanical/material record, not a preparation.
+  // Do not classify it as a formula from the broad 'ยา' prefix alone.
   const isFormula =
-    name.startsWith('ยา') ||
+    (name.startsWith('ยา') && !name.startsWith('ยาง')) ||
     name.startsWith('พิกัด') ||
     name.includes('ตำรับ') ||
     def.includes('ประกอบด้วย') ||
@@ -54,13 +56,16 @@ export function classifyHerbalRecord(record: ThaiHerbalSafetyRecord): HerbalClas
   }
 
   // 2. Check for single-herb evidence (must have positive botanical taxon / part evidence)
+  const hasBotanicalFamily = /วงศ์\s*[ก-๛A-Za-z]{2,}/.test(def);
+  const hasBotanicalBinomial = /\b[A-Z][a-z]{2,}\s+[a-z][a-z-]{2,}\b/.test(def);
+  const hasExplicitPlantPart =
+    /(?:ผล|ดอก|ใบ|ราก|เปลือก|เหง้า|หัว|ต้น|เนื้อไม้|แก่น|ยาง|เมล็ด|ทั้งต้น|ส่วนเหนือดิน|น้ำยาง|เถา|กิ่ง)(?=(?:ของ|จาก|ที่ใช้|ที่นำมาใช้|สด|แห้ง|ซึ่ง|เป็น|ใน|\s|$))/.test(def);
+
+  // A plant-part word or an author abbreviation alone is insufficient.
+  // Require a named botanical family or both a binomial and an explicit plant part.
   const hasBotanicalEvidence =
     isValidText(def) &&
-    (
-      def.includes('วงศ์') ||
-      /\b(L\.|Merr\.|Ridl\.|Spreng\.|Lam\.|DC\.|Hook\.|Benth\.|Schrad\.|Miq\.|Blume|Willd\.|Pers\.|Vahl|Roxb\.|Craib|Kurz|Pierre|Gagnep\.|Baker|Engler|Kuntze|Lour\.|Linn\.)/i.test(def) ||
-      /^(ผล|ดอก|ใบ|ราก|เปลือก|เหง้า|หัว|ต้น|เนื้อไม้|แก่น|ยาง|เมล็ด|ทั้งต้น|ส่วนเหนือดิน|น้ำยาง|เถา|กิ่ง)/.test(def)
-    );
+    (hasBotanicalFamily || (hasBotanicalBinomial && hasExplicitPlantPart));
 
   if (hasBotanicalEvidence) {
     return {
