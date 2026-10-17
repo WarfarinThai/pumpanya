@@ -169,16 +169,27 @@ export function formatSourcePdfPages(
   if (pages === null || pages === undefined) return null;
 
   if (Array.isArray(pages)) {
-    const validNums = pages
-      .map(p => (typeof p === 'number' ? p : Number(String(p).trim())))
-      .filter(n => Number.isSafeInteger(n) && n > 0);
-    if (validNums.length === 0) return null;
-    if (validNums.length === 2) {
-      return validNums[0] === validNums[1]
-        ? `${validNums[0]}`
-        : `${validNums[0]}–${validNums[1]}`;
+    const pageNumbers = pages.map(p =>
+      typeof p === 'number' ? p : Number(String(p).trim())
+    );
+
+    // Reject the entire reference if any page entry is invalid; do not silently
+    // omit invalid pages and accidentally display an incomplete source citation.
+    if (
+      pageNumbers.length === 0 ||
+      pageNumbers.some(n => !Number.isSafeInteger(n) || n <= 0)
+    ) {
+      return null;
     }
-    return Array.from(new Set(validNums)).join(', ');
+
+    if (pageNumbers.length === 2) {
+      if (pageNumbers[1] < pageNumbers[0]) return null;
+      return pageNumbers[0] === pageNumbers[1]
+        ? `${pageNumbers[0]}`
+        : `${pageNumbers[0]}–${pageNumbers[1]}`;
+    }
+
+    return Array.from(new Set(pageNumbers)).join(', ');
   }
 
   if (typeof pages === 'object' && 'page' in pages) {
